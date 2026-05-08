@@ -8,6 +8,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `tests/Module.Tests.ps1` — Pester smoke tests covering manifest validation, `FunctionsToExport`/`Public/` sync, parse-checks of every public script, and CHANGELOG sanity.
+- `.github/workflows/verify.yml` — runs Pester + PSScriptAnalyzer on every push to `main` and every PR. Errors fail the build; warnings are advisory.
+
 ### Changed
 ### Fixed
 
