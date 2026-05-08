@@ -8,11 +8,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+
 - `get-smsmfa` — lists SMS/phone MFA methods for a user
 - `set-smsmfa` — updates the phone number on an existing SMS MFA method
 - `add-smsmfa` — registers a new SMS/phone MFA method (mobile, alternateMobile, or office)
 - `add-tap` — creates a Temporary Access Pass (default: one-time, 60 min; operator can override)
 - `remove-taps` — removes all active TAPs for a user
+- `disable-autocalevents` — disables Outlook "Events from email" across the tenant. Forces the operator to type the tenant primary domain before running. Logs every mailbox to a CSV on the Desktop.
+- `inherit-permissions` — resets NTFS folder ACL to inherit from parent, with optional removal of explicit ACEs. Pure local; no Graph/Exchange.
+
 ### Changed
 ### Fixed
 
