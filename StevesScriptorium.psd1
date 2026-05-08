@@ -31,6 +31,11 @@
         'check-mailflow'
         'get-sharedmailboxaudit'
         'get-groupmembers'
+        'get-smsmfa'
+        'set-smsmfa'
+        'add-smsmfa'
+        'add-tap'
+        'remove-taps'
     )
 
     CmdletsToExport   = @()

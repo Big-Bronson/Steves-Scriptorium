@@ -81,13 +81,22 @@ toolkit 3                 # run a command by number
 |---|---|
 | `toolkit get-groupmembers` | List all members of a group with CSV export |
 
+### MFA & Auth
+
+| Command | Description |
+|---|---|
+| `toolkit get-smsmfa` | Show SMS/phone MFA methods registered for a user |
+| `toolkit set-smsmfa` | Update the phone number on an existing SMS MFA method |
+| `toolkit add-smsmfa` | Register a new SMS/phone MFA method for a user |
+| `toolkit add-tap` | Create a Temporary Access Pass (one-time, 60 min default) |
+| `toolkit remove-taps` | Remove all Temporary Access Passes for a user |
+
 ### Planned
 
 Tracked in the issue tracker; not yet shipped:
 
 - User Lifecycle: `reset-password`
-- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `set-forwarding`, `remove-forwarding`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
-- MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
+- Mailbox & Exchange: `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - System: `inherit-permissions`, `kill-graph`
 
 ---
