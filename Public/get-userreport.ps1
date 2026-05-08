@@ -18,7 +18,7 @@ $upn = Read-Host "Enter UPN"
 $user = Get-MgUser -Filter "userPrincipalName eq '$upn'" `
     -Property "Id,DisplayName,UserPrincipalName,AccountEnabled,AssignedLicenses,CreatedDateTime,JobTitle,Department,OfficeLocation,MobilePhone"
 
-if (-not $user) { Write-Host "User not found: $upn" -ForegroundColor Red; exit }
+if (-not $user) { Write-Host "User not found: $upn" -ForegroundColor Red; return }
 
 $skus = Get-MgSubscribedSku
 $skuLookup = @{}

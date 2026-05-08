@@ -33,7 +33,16 @@
         'get-mailboxperms'
         'get-userperms'
         'add-mailboxperms'
+        'disable-autocalevents'
         'get-groupmembers'
+
+        'get-smsmfa'
+        'set-smsmfa'
+        'add-smsmfa'
+        'add-tap'
+        'remove-taps'
+        'inherit-permissions'
+
     )
 
     CmdletsToExport   = @()
