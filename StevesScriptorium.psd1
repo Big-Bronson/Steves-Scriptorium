@@ -37,6 +37,7 @@
         'add-mailboxperms'
         'disable-autocalevents'
         'get-groupmembers'
+        'kill-graph'
 
         'get-smsmfa'
         'set-smsmfa'

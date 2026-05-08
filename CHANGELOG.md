@@ -8,6 +8,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `kill-graph` — disconnects the current Microsoft Graph session
+- `Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
 - `set-forwarding` — enable SMTP forwarding on a mailbox with copy-in-place option
 - `remove-forwarding` — remove SMTP forwarding from a mailbox
 - `get-mailboxperms` — shows Full Access and Send As delegates on a mailbox (filters NT AUTHORITY / S-1-5 noise)

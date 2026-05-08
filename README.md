@@ -102,6 +102,7 @@ toolkit 3                 # run a command by number
 
 | Command | Description |
 |---|---|
+| `toolkit kill-graph` | Disconnect the current Microsoft Graph session |
 | `toolkit inherit-permissions` | Reset NTFS folder permissions to inherited; optionally strip explicit ACEs |
 
 
@@ -113,6 +114,7 @@ Tracked in the issue tracker; not yet shipped:
 - Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - Mailbox & Exchange: `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
+- System: `inherit-permissions`
 
 - Mailbox & Exchange: `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - System: `inherit-permissions`, `kill-graph`

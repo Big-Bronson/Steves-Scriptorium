@@ -69,6 +69,8 @@ function global:toolkit {
         # Groups
         "get-groupmembers"       = "List all members of a group"
 
+        # System
+        "kill-graph"             = "Disconnect the current Microsoft Graph session"
         # MFA & Auth
         "get-smsmfa"             = "Show SMS/phone MFA methods for a user"
         "set-smsmfa"             = "Update the phone number on an existing SMS MFA method"
@@ -85,9 +87,8 @@ function global:toolkit {
         "get-tenantreport"       = "Tenant Health"
         "check-mailflow"         = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
-
+        "kill-graph"             = "System"
         "get-smsmfa"             = "MFA & Auth"
-
         "inherit-permissions"    = "System"
 
     }
