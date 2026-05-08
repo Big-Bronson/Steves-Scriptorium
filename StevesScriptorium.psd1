@@ -10,8 +10,8 @@
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
-    Copyright         = "(c) $(Get-Date -Format yyyy) Stephen Vella (email@stephenvella.work). All rights reserved."
-    Description       = "Steve's Scriptorium — M365 helpdesk toolkit for user lifecycle, tenant auditing, mailbox management, MFA, and Exchange. Built for MSP engineers."
+    Copyright 	      = '(c) 2026 Stephen Vella (email@stephenvella.work). All rights reserved.'
+    Description       = 'M365 helpdesk toolkit for user lifecycle, tenant auditing, mailbox management, MFA and Exchange. Built for MSP engineers.'
     PowerShellVersion = '5.1'
 
     # What this module exports

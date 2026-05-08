@@ -104,7 +104,7 @@ function toolkit {
     # Match and run
     $scriptFile = Join-Path $scriptsPath "$Command.ps1"
 
-    if ($commands.ContainsKey($Command)) {
+    if ($commands.Contains($Command)) {
         if (Test-Path $scriptFile) {
             & $scriptFile
         } else {

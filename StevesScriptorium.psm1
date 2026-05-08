@@ -123,7 +123,7 @@ function global:toolkit {
         Write-Host "  Running: $Command" -ForegroundColor DarkGray
     }
 
-    if ($commands.ContainsKey($Command)) {
+    if ($commands.Contains($Command)) {
         $scriptFile = Join-Path (Join-Path $PSScriptRoot "Public") "$Command.ps1"
         if (Test-Path $scriptFile) {
             . $scriptFile

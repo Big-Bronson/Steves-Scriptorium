@@ -1,0 +1,85 @@
+# CLAUDE.md — Steve's Scriptorium
+
+Shared context for all Claude Code sessions in this repo. Update this file when you learn something that future Claude sessions should know.
+
+---
+
+## What this project is
+
+A PowerShell module (`StevesScriptorium`) published to the PowerShell Gallery. It's an M365 helpdesk toolkit for MSP engineers — CLI-driven commands for user lifecycle, mailbox management, MFA, Exchange, and tenant auditing. No GUIs.
+
+**Owners:** Steve Vella + one co-engineer. Both use Claude Code.
+
+**GitHub:** `Big-Bronson/Steves-Scriptorium`
+
+---
+
+## Architecture
+
+```
+StevesScriptorium/
+├── StevesScriptorium.psm1   # Module root — loads Public/, exposes toolkit()
+├── StevesScriptorium.psd1   # Manifest — version, PS Gallery metadata, FunctionsToExport
+├── toolkit-profile.ps1      # Standalone profile version of toolkit() (separate from psm1)
+├── Public/                  # One .ps1 per command — each is a self-contained script
+├── Install.ps1              # Bootstrap installer (clone → run this)
+└── Publish.ps1              # PS Gallery publisher
+```
+
+The `toolkit()` function in `StevesScriptorium.psm1` is the CLI dispatcher. It holds an `[ordered]` hashtable of all command names → descriptions, and a separate `$sectionHeaders` hashtable for display grouping.
+
+---
+
+## How to add a new command
+
+1. Create `Public/your-command-name.ps1`
+2. Add an entry to the `$commands` ordered hashtable in `StevesScriptorium.psm1`
+3. Add the same entry to `toolkit-profile.ps1` if it mirrors the same command set
+4. If the command opens a new section in `toolkit`, add it to `$sectionHeaders` (psm1) and `$sectionMap` (toolkit-profile.ps1)
+5. Add to `FunctionsToExport` in `StevesScriptorium.psd1`
+6. Add a row to the README command table
+7. Bump `ModuleVersion` in the `.psd1`
+
+---
+
+## Known gotchas
+
+### OrderedDictionary — use `.Contains()` not `.ContainsKey()`
+
+`[ordered]@{}` creates a `System.Collections.Specialized.OrderedDictionary`, not a regular hashtable. It does **not** have `.ContainsKey()` — use `.Contains()` instead.
+
+```powershell
+# WRONG — throws InvalidOperation on [ordered] hashtables
+if ($commands.ContainsKey($key)) { ... }
+
+# CORRECT
+if ($commands.Contains($key)) { ... }
+```
+
+This has burned us before. Both `StevesScriptorium.psm1` and `toolkit-profile.ps1` were patched for this.
+
+### Each Public script connects itself
+
+Scripts call `Connect-MgGraph` and/or `Connect-ExchangeOnline` at the top if not already connected. They request only the scopes they need. Don't add a global connection step — keep it per-script.
+
+### Offboard log goes to Desktop
+
+`offboard-user.ps1` writes a timestamped CSV to `$env:USERPROFILE\Desktop`. That's intentional — engineers need it immediately accessible.
+
+---
+
+## Coding conventions
+
+- No comments explaining what the code does — only why, if it's non-obvious
+- `Write-Host` with `-ForegroundColor` for all user-facing output; Green = OK, Red = error, Yellow = warning/prompt, DarkGray = informational
+- Log entries use `[OK]`, `[FAILED]`, `[SKIPPED]` status strings (see `offboard-user.ps1` for the pattern)
+- Error handling: wrap individual steps in `try/catch` and log the failure; don't bail the whole script on one step failing
+- PowerShell 5.1 compatibility required (PS 7 preferred, but don't use PS7-only syntax)
+
+---
+
+## Collaboration notes
+
+- Use GitHub branches + PRs for all changes
+- This CLAUDE.md is the shared briefing — update it when you discover something future Claude sessions should know
+- If you make a decision that isn't obvious from reading the code, note it here

@@ -40,7 +40,8 @@ if ($mode -eq "1") {
         if ($s.UserPrincipalName) { $statsIndex[$s.UserPrincipalName.ToLower()] = $s.LastLogonTime }
     }
 
-    $users = foreach ($u in $mgUsers) {
+    $users = $mgUsers | ForEach-Object {
+        $u = $_
         $last = $statsIndex[$u.UserPrincipalName.ToLower()]
         if (-not $last -or $last -lt $cutoff) {
             [PSCustomObject]@{
