@@ -62,6 +62,9 @@ function global:toolkit {
 
         # Groups
         "get-groupmembers"       = "List all members of a group"
+
+        # System
+        "kill-graph"             = "Disconnect the current Microsoft Graph session"
     }
 
     $sectionHeaders = @{
@@ -70,6 +73,7 @@ function global:toolkit {
         "get-tenantreport"       = "Tenant Health"
         "check-mailflow"         = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
+        "kill-graph"             = "System"
     }
 
     if (-not $Command) {

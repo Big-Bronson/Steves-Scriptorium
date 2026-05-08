@@ -8,6 +8,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `kill-graph` — disconnects the current Microsoft Graph session
+- Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
 ### Changed
 ### Fixed
 
