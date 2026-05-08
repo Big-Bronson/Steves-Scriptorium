@@ -9,7 +9,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 ### Changed
+- `new-user` now accepts the initial password as a `SecureString` and no longer echoes it in the summary line. The password is converted to plain only at the `New-MgUser` call site and cleared in a `finally` block.
+- `offboard-user` records the generated reset password in the CSV log (the comment claimed this but the value was never written). The log file lands on the offboarder's Desktop.
+
 ### Fixed
+- `offboard-user` no longer depends on `[System.Web.Security.Membership]::GeneratePassword`, which is unavailable on PowerShell 7. Replaced with a portable `RandomNumberGenerator`-based generator that guarantees one of each M365 complexity class (upper, lower, digit, symbol).
+- All `Public/*.ps1` scripts now use `return` instead of `exit` for early termination. `exit` from a dot-sourced script terminated the user's PowerShell session, not just the script. Affected: `get-guestaudit`, `get-groupmembers`, `get-userreport`, `offboard-user`, `set-userlicence`.
 
 ---
 
