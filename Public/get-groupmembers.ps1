@@ -10,8 +10,8 @@ if (-not (Get-MgContext)) {
 $groupName = Read-Host "Enter group display name (exact match)"
 $group = Get-MgGroup -Filter "displayName eq '$groupName'"
 
-if (-not $group) { Write-Host "Group not found: $groupName" -ForegroundColor Red; exit }
-if ($group.Count -gt 1) { Write-Host "Multiple matches — be more specific." -ForegroundColor Red; exit }
+if (-not $group) { Write-Host "Group not found: $groupName" -ForegroundColor Red; return }
+if ($group.Count -gt 1) { Write-Host "Multiple matches — be more specific." -ForegroundColor Red; return }
 
 Write-Host "`nGroup: $($group.DisplayName)"
 Write-Host "Type:  $($group.GroupTypes -join ', ') | Mail: $($group.MailEnabled) | Security: $($group.SecurityEnabled)`n"
