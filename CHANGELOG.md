@@ -8,6 +8,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+
+- `tests/Module.Tests.ps1` — Pester smoke tests covering manifest validation, `FunctionsToExport`/`Public/` sync, parse-checks of every public script, and CHANGELOG sanity.
+- `.github/workflows/verify.yml` — runs Pester + PSScriptAnalyzer on every push to `main` and every PR. Errors fail the build; warnings are advisory.
 - `kill-graph` — disconnects the current Microsoft Graph session
 - `Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
 - `set-forwarding` — enable SMTP forwarding on a mailbox with copy-in-place option
@@ -22,6 +25,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - `remove-taps` — removes all active TAPs for a user
 - `disable-autocalevents` — disables Outlook "Events from email" across the tenant. Forces the operator to type the tenant primary domain before running. Logs every mailbox to a CSV on the Desktop.
 - `inherit-permissions` — resets NTFS folder ACL to inherit from parent, with optional removal of explicit ACEs. Pure local; no Graph/Exchange.
+
 
 ### Changed
 - `new-user` now accepts the initial password as a `SecureString` and no longer echoes it in the summary line. The password is converted to plain only at the `New-MgUser` call site and cleared in a `finally` block.
