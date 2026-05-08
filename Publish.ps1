@@ -39,9 +39,23 @@ function Write-Step  { param($m) Write-Host "==> $m" -ForegroundColor Cyan }
 function Write-Ok    { param($m) Write-Host "    OK: $m" -ForegroundColor Green }
 function Write-Warn2 { param($m) Write-Host "    !!  $m" -ForegroundColor Yellow }
 
-# --- Pre-flight: Get-StoredSecret must exist (from $PROFILE) ---------------
-if (-not (Get-Command Get-StoredSecret -ErrorAction SilentlyContinue)) {
-    throw 'Get-StoredSecret not found. Reload $PROFILE or open a new shell.'
+# --- Pre-flight: warn early if neither secret source is available ----------
+$hasStoredSecret = [bool](Get-Command Get-StoredSecret -ErrorAction SilentlyContinue)
+$hasEnvKey       = [bool]$env:PSGALLERY_API_KEY
+if (-not $hasStoredSecret -and -not $hasEnvKey) {
+    throw @'
+No API key source found. Set one up before publishing:
+
+  Option A — Windows Credential Manager (recommended for regular publishers):
+    Add Get-StoredSecret / Set-StoredSecret helpers to your $PROFILE, then:
+    Set-StoredSecret -Target 'PSGallery-StevesScriptorium' -Secret '<your-key>'
+
+  Option B — Environment variable (simplest for one-off use):
+    $env:PSGALLERY_API_KEY = '<your-key>'
+    .\Publish.ps1
+
+Your PS Gallery API key: https://www.powershellgallery.com/account/apikeys
+'@
 }
 
 # --- 1. Manifest validation ------------------------------------------------
@@ -122,11 +136,17 @@ if ([string]::IsNullOrWhiteSpace($content.Trim())) {
 }
 Write-Ok '[Unreleased] has content'
 
-# --- 6. Read API key from Credential Manager -------------------------------
-Write-Step 'Reading API key from Credential Manager'
-$apiKey = Get-StoredSecret -Target $CredTarget
+# --- 6. Read API key (Credential Manager → env var fallback) ---------------
+Write-Step 'Reading API key'
+$apiKey = $null
+if ($hasStoredSecret) {
+    $apiKey = Get-StoredSecret -Target $CredTarget
+}
 if (-not $apiKey) {
-    throw "No credential found at target '$CredTarget'. Run: Set-StoredSecret -Target '$CredTarget' -Secret '<your-key>'"
+    $apiKey = $env:PSGALLERY_API_KEY
+}
+if (-not $apiKey) {
+    throw "API key empty. Check your Credential Manager entry '$CredTarget' or set `$env:PSGALLERY_API_KEY."
 }
 Write-Ok 'API key retrieved'
 
