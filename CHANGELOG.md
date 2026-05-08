@@ -8,10 +8,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `set-forwarding` — enable SMTP forwarding on a mailbox with copy-in-place option
+- `remove-forwarding` — remove SMTP forwarding from a mailbox
 - `get-mailboxperms` — shows Full Access and Send As delegates on a mailbox (filters NT AUTHORITY / S-1-5 noise)
 - `get-userperms` — shows all mailboxes a given user has delegated access to (iterates tenant)
 - `add-mailboxperms` — grants Full Access (with auto-map choice) and/or Send As on a mailbox
-
 - `get-smsmfa` — lists SMS/phone MFA methods for a user
 - `set-smsmfa` — updates the phone number on an existing SMS MFA method
 - `add-smsmfa` — registers a new SMS/phone MFA method (mobile, alternateMobile, or office)

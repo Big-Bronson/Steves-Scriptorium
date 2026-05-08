@@ -74,6 +74,8 @@ toolkit 3                 # run a command by number
 |---|---|
 | `toolkit check-mailflow` | Trace message delivery for a sender/recipient pair |
 | `toolkit get-sharedmailboxaudit` | Shared mailboxes with delegates, size, licence status |
+| `toolkit set-forwarding` | Enable SMTP forwarding on a mailbox |
+| `toolkit remove-forwarding` | Remove SMTP forwarding from a mailbox |
 | `toolkit get-mailboxperms` | Who has delegated access (Full Access, Send As) to a mailbox |
 | `toolkit get-userperms` | Which mailboxes a user has delegated access to |
 | `toolkit add-mailboxperms` | Grant Full Access and/or Send As on a mailbox |
@@ -108,6 +110,7 @@ toolkit 3                 # run a command by number
 Tracked in the issue tracker; not yet shipped:
 
 - User Lifecycle: `reset-password`
+- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - Mailbox & Exchange: `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
 

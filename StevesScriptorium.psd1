@@ -30,6 +30,8 @@
         'get-tenantreport'
         'check-mailflow'
         'get-sharedmailboxaudit'
+        'set-forwarding'
+        'remove-forwarding'
         'get-mailboxperms'
         'get-userperms'
         'add-mailboxperms'
