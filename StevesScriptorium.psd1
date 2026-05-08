@@ -31,6 +31,7 @@
         'check-mailflow'
         'get-sharedmailboxaudit'
         'get-groupmembers'
+        'kill-graph'
     )
 
     CmdletsToExport   = @()

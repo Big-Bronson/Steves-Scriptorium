@@ -81,6 +81,12 @@ toolkit 3                 # run a command by number
 |---|---|
 | `toolkit get-groupmembers` | List all members of a group with CSV export |
 
+### System
+
+| Command | Description |
+|---|---|
+| `toolkit kill-graph` | Disconnect the current Microsoft Graph session |
+
 ### Planned
 
 Tracked in the issue tracker; not yet shipped:
@@ -88,7 +94,7 @@ Tracked in the issue tracker; not yet shipped:
 - User Lifecycle: `reset-password`
 - Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `set-forwarding`, `remove-forwarding`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
 - MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
-- System: `inherit-permissions`, `kill-graph`
+- System: `inherit-permissions`
 
 ---
 
