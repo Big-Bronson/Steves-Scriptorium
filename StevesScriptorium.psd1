@@ -30,7 +30,9 @@
         'get-tenantreport'
         'check-mailflow'
         'get-sharedmailboxaudit'
+        'disable-autocalevents'
         'get-groupmembers'
+        'inherit-permissions'
     )
 
     CmdletsToExport   = @()

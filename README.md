@@ -74,6 +74,7 @@ toolkit 3                 # run a command by number
 |---|---|
 | `toolkit check-mailflow` | Trace message delivery for a sender/recipient pair |
 | `toolkit get-sharedmailboxaudit` | Shared mailboxes with delegates, size, licence status |
+| `toolkit disable-autocalevents` | Disable "Events from email" tenant-wide (requires typing tenant domain to confirm) |
 
 ### Groups
 
@@ -81,14 +82,20 @@ toolkit 3                 # run a command by number
 |---|---|
 | `toolkit get-groupmembers` | List all members of a group with CSV export |
 
+### System
+
+| Command | Description |
+|---|---|
+| `toolkit inherit-permissions` | Reset NTFS folder permissions to inherited; optionally strip explicit ACEs |
+
 ### Planned
 
 Tracked in the issue tracker; not yet shipped:
 
 - User Lifecycle: `reset-password`
-- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `set-forwarding`, `remove-forwarding`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
+- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `set-forwarding`, `remove-forwarding`, `get-archive`, `enable-autoexpand`
 - MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
-- System: `inherit-permissions`, `kill-graph`
+- System: `kill-graph`
 
 ---
 
