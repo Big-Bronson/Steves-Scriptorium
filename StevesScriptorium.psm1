@@ -59,11 +59,18 @@ function global:toolkit {
         # Mailbox & Exchange
         "check-mailflow"         = "Trace message delivery for a sender/recipient"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
+        "set-forwarding"         = "Enable SMTP forwarding on a mailbox"
+        "remove-forwarding"      = "Remove SMTP forwarding from a mailbox"
+        "get-mailboxperms"       = "Who has delegated access to a mailbox"
+        "get-userperms"          = "Which mailboxes a user has delegated access to"
+        "add-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
         "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
 
         # Groups
         "get-groupmembers"       = "List all members of a group"
 
+        # System
+        "kill-graph"             = "Disconnect the current Microsoft Graph session"
         # MFA & Auth
         "get-smsmfa"             = "Show SMS/phone MFA methods for a user"
         "set-smsmfa"             = "Update the phone number on an existing SMS MFA method"
@@ -80,9 +87,8 @@ function global:toolkit {
         "get-tenantreport"       = "Tenant Health"
         "check-mailflow"         = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
-
+        "kill-graph"             = "System"
         "get-smsmfa"             = "MFA & Auth"
-
         "inherit-permissions"    = "System"
 
     }
