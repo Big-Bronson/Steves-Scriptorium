@@ -31,12 +31,12 @@ $upn = Read-Host "Enter UPN of user to offboard"
 $user = Get-MgUser -Filter "userPrincipalName eq '$upn'" -Property "Id,DisplayName,UserPrincipalName,AssignedLicenses"
 if (-not $user) {
     Write-Host "User not found: $upn" -ForegroundColor Red
-    exit
+    return
 }
 
 Write-Host "`nOffboarding: $($user.DisplayName) ($upn)" -ForegroundColor Yellow
 Write-Host "This will perform all offboarding steps. Continue? (y/n)" -ForegroundColor Yellow
-if ((Read-Host) -ne "y") { Write-Host "Aborted."; exit }
+if ((Read-Host) -ne "y") { Write-Host "Aborted."; return }
 
 $log = [System.Collections.Generic.List[PSCustomObject]]::new()
 
@@ -54,6 +54,37 @@ function Log-Action {
     Write-Host "  [$Status] $Step$(if ($Notes) { " — $Notes" })" -ForegroundColor $colour
 }
 
+# Portable password generator — replaces [System.Web.Security.Membership]
+# which is unavailable in PowerShell 7. Guarantees one of each character
+# class to satisfy M365 complexity rules.
+function New-OffboardPassword {
+    param([int]$Length = 20)
+    $upper = [char[]]'ABCDEFGHJKLMNPQRSTUVWXYZ'
+    $lower = [char[]]'abcdefghjkmnpqrstuvwxyz'
+    $digit = [char[]]'23456789'
+    $sym   = [char[]]'!@#$%^&*-_=+'
+    $all   = @($upper + $lower + $digit + $sym)
+    $rng   = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+    $buf   = [byte[]]::new(4)
+    $pick  = {
+        param($pool)
+        $rng.GetBytes($buf)
+        $pool[[BitConverter]::ToUInt32($buf, 0) % [uint32]$pool.Length]
+    }
+    $chars = [System.Collections.Generic.List[char]]::new()
+    $chars.Add((& $pick $upper))
+    $chars.Add((& $pick $lower))
+    $chars.Add((& $pick $digit))
+    $chars.Add((& $pick $sym))
+    while ($chars.Count -lt $Length) { $chars.Add((& $pick $all)) }
+    for ($i = $chars.Count - 1; $i -gt 0; $i--) {
+        $rng.GetBytes($buf)
+        $j = [int]([BitConverter]::ToUInt32($buf, 0) % [uint32]($i + 1))
+        $tmp = $chars[$i]; $chars[$i] = $chars[$j]; $chars[$j] = $tmp
+    }
+    -join $chars
+}
+
 Write-Host ""
 
 # 1. Block sign-in
@@ -62,11 +93,13 @@ try {
     Log-Action "Block sign-in" "OK"
 } catch { Log-Action "Block sign-in" "FAILED" $_ }
 
-# 2. Reset password to random string
+# 2. Reset password to random string. The generated password is recorded
+# in the export so the engineer has it for the audit trail; the file lands
+# on the offboarder's Desktop, not the user's.
 try {
-    $rnd = [System.Web.Security.Membership]::GeneratePassword(20, 4)
+    $rnd = New-OffboardPassword -Length 20
     Update-MgUser -UserId $user.Id -PasswordProfile @{ Password = $rnd; ForceChangePasswordNextSignIn = $false }
-    Log-Action "Reset password" "OK" "New password logged in export"
+    Log-Action "Reset password" "OK" "New password: $rnd"
 } catch { Log-Action "Reset password" "FAILED" $_ }
 
 # 3. Revoke sessions

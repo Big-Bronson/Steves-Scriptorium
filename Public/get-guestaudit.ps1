@@ -14,7 +14,7 @@ $guests = Get-MgUser -All -Filter "userType eq 'Guest'" `
 
 if ($guests.Count -eq 0) {
     Write-Host "No guest accounts found."
-    exit
+    return
 }
 
 $cutoff = (Get-Date).AddDays(-90)
