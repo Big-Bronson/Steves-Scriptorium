@@ -59,9 +59,13 @@ function global:toolkit {
         # Mailbox & Exchange
         "check-mailflow"         = "Trace message delivery for a sender/recipient"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
+        "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
 
         # Groups
         "get-groupmembers"       = "List all members of a group"
+
+        # System
+        "inherit-permissions"    = "Reset folder permissions to inherited"
     }
 
     $sectionHeaders = @{
@@ -70,6 +74,7 @@ function global:toolkit {
         "get-tenantreport"       = "Tenant Health"
         "check-mailflow"         = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
+        "inherit-permissions"    = "System"
     }
 
     if (-not $Command) {
