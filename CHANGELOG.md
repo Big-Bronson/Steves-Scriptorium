@@ -8,6 +8,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `get-mailboxperms` — shows Full Access and Send As delegates on a mailbox (filters NT AUTHORITY / S-1-5 noise)
+- `get-userperms` — shows all mailboxes a given user has delegated access to (iterates tenant)
+- `add-mailboxperms` — grants Full Access (with auto-map choice) and/or Send As on a mailbox
 ### Changed
 ### Fixed
 
