@@ -59,6 +59,9 @@ function global:toolkit {
         # Mailbox & Exchange
         "check-mailflow"         = "Trace message delivery for a sender/recipient"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
+        "get-mailboxperms"       = "Who has delegated access to a mailbox"
+        "get-userperms"          = "Which mailboxes a user has delegated access to"
+        "add-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
         "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
 
         # Groups

@@ -30,6 +30,9 @@
         'get-tenantreport'
         'check-mailflow'
         'get-sharedmailboxaudit'
+        'get-mailboxperms'
+        'get-userperms'
+        'add-mailboxperms'
         'disable-autocalevents'
         'get-groupmembers'
 
