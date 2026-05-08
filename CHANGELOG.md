@@ -8,6 +8,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `set-forwarding` — enable SMTP forwarding on a mailbox with copy-in-place option
+- `remove-forwarding` — remove SMTP forwarding from a mailbox
 ### Changed
 ### Fixed
 

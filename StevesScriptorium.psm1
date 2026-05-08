@@ -59,6 +59,8 @@ function global:toolkit {
         # Mailbox & Exchange
         "check-mailflow"         = "Trace message delivery for a sender/recipient"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
+        "set-forwarding"         = "Enable SMTP forwarding on a mailbox"
+        "remove-forwarding"      = "Remove SMTP forwarding from a mailbox"
 
         # Groups
         "get-groupmembers"       = "List all members of a group"
