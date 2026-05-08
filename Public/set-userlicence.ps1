@@ -9,7 +9,7 @@ if (-not (Get-MgContext)) {
 
 $upn = Read-Host "Enter UPN"
 $user = Get-MgUser -Filter "userPrincipalName eq '$upn'" -Property "Id,DisplayName,AssignedLicenses"
-if (-not $user) { Write-Host "User not found." -ForegroundColor Red; exit }
+if (-not $user) { Write-Host "User not found." -ForegroundColor Red; return }
 
 # Build SKU lookup
 $skus = Get-MgSubscribedSku
@@ -39,7 +39,7 @@ $action = Read-Host "`nAction — (1) Assign  (2) Remove"
 $index  = [int](Read-Host "Enter SKU number from list above") - 1
 
 if ($index -lt 0 -or $index -ge $skuList.Count) {
-    Write-Host "Invalid selection." -ForegroundColor Red; exit
+    Write-Host "Invalid selection." -ForegroundColor Red; return
 }
 
 $selectedSku = $skuList[$index]

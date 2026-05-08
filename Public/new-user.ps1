@@ -9,18 +9,26 @@ if (-not (Get-MgContext)) {
 
 $displayName = Read-Host "Display Name (eg. Jane Smith)"
 $upn         = Read-Host "UPN (eg. jane.smith@domain.com)"
-$password    = Read-Host "Initial password"
+$securePw    = Read-Host "Initial password" -AsSecureString
 $forceChange = (Read-Host "Force password change on first login? (y/n)") -eq "y"
 
+# PasswordProfile takes a plain string; convert at the point of use and
+# clear the local copy as soon as the call returns.
+$plainPw = [System.Net.NetworkCredential]::new('', $securePw).Password
+
 Write-Host "`nCreating user..."
-$newUser = New-MgUser -DisplayName $displayName `
-    -UserPrincipalName $upn `
-    -MailNickname ($upn.Split("@")[0]) `
-    -AccountEnabled $true `
-    -PasswordProfile @{
-        Password = $password
-        ForceChangePasswordNextSignIn = $forceChange
-    }
+try {
+    $newUser = New-MgUser -DisplayName $displayName `
+        -UserPrincipalName $upn `
+        -MailNickname ($upn.Split("@")[0]) `
+        -AccountEnabled $true `
+        -PasswordProfile @{
+            Password = $plainPw
+            ForceChangePasswordNextSignIn = $forceChange
+        }
+} finally {
+    $plainPw = $null
+}
 
 Write-Host "Created: $($newUser.DisplayName) ($($newUser.Id))"
 
@@ -77,5 +85,5 @@ while ($addMore) {
 Write-Host "`n--- Done ---"
 Write-Host "User:         $displayName"
 Write-Host "UPN:          $upn"
-Write-Host "Password:     $password"
+Write-Host "Password:     (set — not echoed)"
 Write-Host "Force change: $forceChange"
