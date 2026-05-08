@@ -9,9 +9,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 - `kill-graph` — disconnects the current Microsoft Graph session
-- Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
+- `Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
+- `get-mailboxperms` — shows Full Access and Send As delegates on a mailbox (filters NT AUTHORITY / S-1-5 noise)
+- `get-userperms` — shows all mailboxes a given user has delegated access to (iterates tenant)
+- `add-mailboxperms` — grants Full Access (with auto-map choice) and/or Send As on a mailbox
+
+- `get-smsmfa` — lists SMS/phone MFA methods for a user
+- `set-smsmfa` — updates the phone number on an existing SMS MFA method
+- `add-smsmfa` — registers a new SMS/phone MFA method (mobile, alternateMobile, or office)
+- `add-tap` — creates a Temporary Access Pass (default: one-time, 60 min; operator can override)
+- `remove-taps` — removes all active TAPs for a user
+- `disable-autocalevents` — disables Outlook "Events from email" across the tenant. Forces the operator to type the tenant primary domain before running. Logs every mailbox to a CSV on the Desktop.
+- `inherit-permissions` — resets NTFS folder ACL to inherit from parent, with optional removal of explicit ACEs. Pure local; no Graph/Exchange.
+
 ### Changed
+- `new-user` now accepts the initial password as a `SecureString` and no longer echoes it in the summary line. The password is converted to plain only at the `New-MgUser` call site and cleared in a `finally` block.
+- `offboard-user` records the generated reset password in the CSV log (the comment claimed this but the value was never written). The log file lands on the offboarder's Desktop.
+
 ### Fixed
+- `offboard-user` no longer depends on `[System.Web.Security.Membership]::GeneratePassword`, which is unavailable on PowerShell 7. Replaced with a portable `RandomNumberGenerator`-based generator that guarantees one of each M365 complexity class (upper, lower, digit, symbol).
+- All `Public/*.ps1` scripts now use `return` instead of `exit` for early termination. `exit` from a dot-sourced script terminated the user's PowerShell session, not just the script. Affected: `get-guestaudit`, `get-groupmembers`, `get-userreport`, `offboard-user`, `set-userlicence`.
 
 ---
 
