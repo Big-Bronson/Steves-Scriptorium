@@ -24,6 +24,9 @@ config.local.ps1
 # VS Code
 .vscode/
 
+# Claude Code local session state (allowlist, agent worktrees, etc.)
+.claude/
+
 # macOS
 .DS_Store
 
