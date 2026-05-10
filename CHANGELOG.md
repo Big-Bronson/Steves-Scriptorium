@@ -8,13 +8,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
-- `kill-graph` — disconnects the current Microsoft Graph session
-- `Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
 
-- `tests/Module.Tests.ps1` — Pester smoke tests covering manifest validation, `FunctionsToExport`/`Public/` sync, parse-checks of every public script, and CHANGELOG sanity.
-- `.github/workflows/verify.yml` — runs Pester + PSScriptAnalyzer on every push to `main` and every PR. Errors fail the build; warnings are advisory.
+### Changed
+
+### Fixed
+
+---
+
+## [1.1.0] — 2026-05-11
+
+### Added
 - `kill-graph` — disconnects the current Microsoft Graph session
-- `Pester smoke tests (`tests/Module.Tests.ps1`) — static checks for manifest sync and script parse errors
 - `set-forwarding` — enable SMTP forwarding on a mailbox with copy-in-place option
 - `remove-forwarding` — remove SMTP forwarding from a mailbox
 - `get-mailboxperms` — shows Full Access and Send As delegates on a mailbox (filters NT AUTHORITY / S-1-5 noise)
@@ -27,15 +31,27 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - `remove-taps` — removes all active TAPs for a user
 - `disable-autocalevents` — disables Outlook "Events from email" across the tenant. Forces the operator to type the tenant primary domain before running. Logs every mailbox to a CSV on the Desktop.
 - `inherit-permissions` — resets NTFS folder ACL to inherit from parent, with optional removal of explicit ACEs. Pure local; no Graph/Exchange.
-
+- `tests/Module.Tests.ps1` — Pester smoke tests covering manifest validation, `FunctionsToExport`/`Public/` sync, parse-checks of every public script, and CHANGELOG sanity.
+- `.github/workflows/verify.yml` — runs Pester + PSScriptAnalyzer on every push to `main` and every PR. Errors fail the build; warnings are advisory.
+- ADR-0019, ADR-0020, ADR-0021, ADR-0022 — design records for the V2 mailflow migration, defensive Graph disconnect, per-iteration failure logging pattern, and explicit Graph submodule pinning.
 
 ### Changed
 - `new-user` now accepts the initial password as a `SecureString` and no longer echoes it in the summary line. The password is converted to plain only at the `New-MgUser` call site and cleared in a `finally` block.
 - `offboard-user` records the generated reset password in the CSV log (the comment claimed this but the value was never written). The log file lands on the offboarder's Desktop.
+- `check-mailflow` migrated from deprecated `Get-MessageTrace` / `Get-MessageTraceDetail` to `Get-MessageTraceV2` / `Get-MessageTraceDetailV2`. Output schema preserved; pagination is now explicit (cursor on `-StartingRecipientAddress`); drill-down resolves the recipient from the matching row since V2 requires it. See ADR-0019.
+- `RequiredModules` in the manifest expanded to declare every Graph submodule actually used at runtime: `Microsoft.Graph.Authentication`, `Microsoft.Graph.Users.Actions`, `Microsoft.Graph.Groups`, `Microsoft.Graph.Identity.DirectoryManagement`, `Microsoft.Graph.Reports` (in addition to the previously-declared `Microsoft.Graph.Users` and `Microsoft.Graph.Identity.SignIns`). Previously, install-from-PSGallery left users with a partial install. See ADR-0022.
+- `ExchangeOnlineManagement` minimum version bumped to 3.7.0 to guarantee the V2 message-trace cmdlets are present.
+- CI workflow (`.github/workflows/verify.yml`) now installs every module declared in the manifest's `RequiredModules` explicitly, rather than relying on the GitHub-hosted runner image shipping the Microsoft.Graph.* submodules pre-installed.
+- README "Planned" section trimmed to reflect what's actually still planned (`reset-password`, `get-archive`, `enable-autoexpand`); previously listed several already-shipped commands and was duplicated three times.
+- README permissions table corrected and expanded — added missing scopes (`Group.ReadWrite.All`, `Group.Read.All`, `Organization.Read.All`, `RoleManagement.Read.Directory`), credited additional consumers on existing rows, removed the stale `reset-password` reference.
 
 ### Fixed
-- `offboard-user` no longer depends on `[System.Web.Security.Membership]::GeneratePassword`, which is unavailable on PowerShell 7. Replaced with a portable `RandomNumberGenerator`-based generator that guarantees one of each M365 complexity class (upper, lower, digit, symbol).
-- All `Public/*.ps1` scripts now use `return` instead of `exit` for early termination. `exit` from a dot-sourced script terminated the user's PowerShell session, not just the script. Affected: `get-guestaudit`, `get-groupmembers`, `get-userreport`, `offboard-user`, `set-userlicence`.
+- `offboard-user` no longer depends on `[System.Web.Security.Membership]::GeneratePassword`, which is unavailable on PowerShell 7. Replaced with a portable `RandomNumberGenerator`-based generator that guarantees one of each M365 complexity class (upper, lower, digit, symbol). See ADR-0017.
+- All `Public/*.ps1` scripts now use `return` instead of `exit` for early termination. `exit` from a dot-sourced script terminated the user's PowerShell session, not just the script. Affected: `get-guestaudit`, `get-groupmembers`, `get-userreport`, `offboard-user`, `set-userlicence`. See ADR-0016.
+- `offboard-user` group/role/MFA cleanup steps now log per-item failures as their own CSV rows (with status `FAILED`) rather than silently swallowing exceptions and reporting the attempted count as the "OK" count. Audit-log integrity restored. See ADR-0021.
+- `kill-graph` now no-ops cleanly when no Microsoft Graph session is active, rather than throwing a confusing red exception. See ADR-0020.
+- `get-allusers` no longer aborts on accounts with a null `UserPrincipalName` (orphan / partially-provisioned). These now appear in the export with note `"No UPN — orphan account"`.
+- `toolkit-profile.ps1` ghost commands removed (`reset-password`, `rename-pc`, `get-licensedusers`, `get-archive`, `enable-autoexpand`) — they had no matching `.ps1` and produced "Script not found" when invoked.
 
 ---
 

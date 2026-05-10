@@ -111,16 +111,7 @@ toolkit 3                 # run a command by number
 Tracked in the issue tracker; not yet shipped:
 
 - User Lifecycle: `reset-password`
-- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `get-archive`, `enable-autoexpand`, `disable-autocalevents`
-- MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
-- System: `inherit-permissions`
-
-- Mailbox & Exchange: `get-archive`, `enable-autoexpand`, `disable-autocalevents`
-- System: `inherit-permissions`, `kill-graph`
-
-- Mailbox & Exchange: `get-userperms`, `get-mailboxperms`, `add-mailboxperms`, `set-forwarding`, `remove-forwarding`, `get-archive`, `enable-autoexpand`
-- MFA & Auth: `get-smsmfa`, `set-smsmfa`, `add-smsmfa`, `add-tap`, `remove-taps`
-- System: `kill-graph`
+- Mailbox & Exchange: `get-archive`, `enable-autoexpand`
 
 
 ---
@@ -146,15 +137,19 @@ Each script connects itself and prompts for auth. The Graph scopes required vary
 
 | Scope | Used by |
 |---|---|
-| `User.ReadWrite.All` | new-user, offboard-user, reset-password, set-userlicence |
-| `User.Read.All` | get-allusers, get-userreport, get-mfaaudit, get-tenantreport |
-| `Directory.ReadWrite.All` | offboard-user, new-user |
-| `Directory.Read.All` | get-tenantreport, get-userreport, get-guestaudit |
-| `UserAuthenticationMethod.ReadWrite.All` | add/set/get-smsmfa, add-tap, remove-taps |
-| `UserAuthenticationMethod.Read.All` | get-mfaaudit, get-userreport |
+| `User.ReadWrite.All` | new-user, offboard-user, set-userlicence |
+| `User.Read.All` | get-allusers, get-guestaudit, get-groupmembers, get-inactiveusers, get-mfaaudit, get-sharedmailboxaudit, get-tenantreport, get-userreport |
+| `Directory.ReadWrite.All` | offboard-user, set-userlicence |
+| `Directory.Read.All` | get-allusers, get-guestaudit, get-inactiveusers, get-signinlogs, get-tenantreport, get-userreport, new-user |
+| `Group.ReadWrite.All` | new-user |
+| `Group.Read.All` | get-groupmembers |
+| `UserAuthenticationMethod.ReadWrite.All` | add-smsmfa, set-smsmfa, add-tap, remove-taps, offboard-user |
+| `UserAuthenticationMethod.Read.All` | get-smsmfa, get-mfaaudit, get-userreport, get-tenantreport |
+| `Organization.Read.All` | disable-autocalevents, get-tenantreport |
+| `RoleManagement.Read.Directory` | get-tenantreport |
+| `RoleManagement.ReadWrite.Directory` | offboard-user |
 | `AuditLog.Read.All` | get-signinlogs |
 | `ServiceHealth.Read.All` | get-tenantreport |
-| `RoleManagement.ReadWrite.Directory` | offboard-user |
 | Exchange Online | all mailbox/Exchange commands |
 
 ---

@@ -29,10 +29,29 @@ $results = foreach ($user in $users) {
         ($user.AssignedLicenses.SkuId | ForEach-Object { $skuLookup[$_] }) -join ", "
     } else { "None" }
 
-    $lastLogin = $statsIndex[$user.UserPrincipalName.ToLower()]
+    # Null-UPN guard — mirrors the same check used when building $statsIndex
+    # above. Without this guard, a single orphan or partially-provisioned
+    # account (no UPN assigned) throws NullReferenceException on .ToLower()
+    # and aborts the entire export, taking the report down for the whole
+    # tenant. Orphans are rare but real (failed provisioning, half-deleted
+    # directory objects) — surfacing them in the export is exactly the point
+    # of this report, so we deliberately do NOT skip them.
+    if ($user.UserPrincipalName) {
+        $lastLogin = $statsIndex[$user.UserPrincipalName.ToLower()]
+    } else {
+        # Orphan path: no UPN means no mailbox-stats lookup is possible.
+        # Leave $lastLogin null and let the "No UPN" note below take
+        # precedence over the usual Disabled / No Activity / Active notes.
+        $lastLogin = $null
+    }
     $enabled   = $user.AccountEnabled
 
-    $notes = if (-not $enabled) {
+    # Note ordering matters here — the orphan check comes first so that a
+    # user with no UPN is never mis-labelled as "No Mailbox Activity" (which
+    # would be technically true but uselessly vague).
+    $notes = if (-not $user.UserPrincipalName) {
+        "No UPN — orphan account"
+    } elseif (-not $enabled) {
         "Account Disabled"
     } elseif (-not $lastLogin) {
         "No Mailbox Activity"

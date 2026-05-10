@@ -109,42 +109,132 @@ try {
 } catch { Log-Action "Revoke active sessions" "FAILED" $_ }
 
 # 4. Remove group memberships
+# -------------------------------------------------------------------------
+# Iterate-and-collect pattern (see ADR-0021): for batch operations where
+# individual items can fail independently, we count successes and failures
+# separately, then write ONE summary line plus ONE per-failure line per
+# failed item. This keeps the audit log honest — without this, a partial
+# failure would be invisible in the CSV (the previous implementation
+# silently swallowed exceptions and reported the attempted count as the
+# "OK" count). Honest audit trails matter for offboarding above all other
+# operations, since the CSV is the engineer's only proof that each step
+# was performed (or attempted).
 try {
     $groups = Get-MgUserMemberOf -UserId $user.Id | Where-Object { $_.OdataType -eq "#microsoft.graph.group" }
-    $removed = 0
+    $succeeded = 0
+    $failures  = [System.Collections.Generic.List[PSCustomObject]]::new()
     foreach ($group in $groups) {
+        # Best-effort name resolution. The displayName lives in the group's
+        # AdditionalProperties bag; if the lookup throws (rare — usually a
+        # transient Graph hiccup) we fall back to the GUID so the CSV row
+        # still identifies the group unambiguously.
+        $groupName = try { $group.AdditionalProperties.displayName } catch { $group.Id }
+        if (-not $groupName) { $groupName = $group.Id }
         try {
-            Remove-MgGroupMemberByRef -GroupId $group.Id -DirectoryObjectId $user.Id
-            $removed++
-        } catch { }
+            Remove-MgGroupMemberByRef -GroupId $group.Id -DirectoryObjectId $user.Id -ErrorAction Stop
+            $succeeded++
+        } catch {
+            $failures.Add([PSCustomObject]@{ Name = $groupName; Error = $_.Exception.Message })
+        }
     }
-    Log-Action "Remove group memberships" "OK" "Removed from $removed group(s)"
+    # Conditional summary status: OK if everything worked or some worked,
+    # FAILED only if nothing worked. The Notes column distinguishes the
+    # mixed-success case so the engineer sees at a glance whether follow-up
+    # is needed.
+    $summary = if ($failures.Count -eq 0) {
+        "OK", "Removed from $succeeded group(s)"
+    } elseif ($succeeded -gt 0) {
+        "OK", "Removed from $succeeded group(s); $($failures.Count) failed (see rows below)"
+    } else {
+        "FAILED", "$($failures.Count) failure(s) (see rows below); 0 succeeded"
+    }
+    Log-Action "Remove group memberships" $summary[0] $summary[1]
+    # Per-failure detail rows. The leading "↳" makes the parent/child
+    # relationship visible in the CSV when sorted by timestamp; Log-Action
+    # also colours these red on screen so the operator sees them live.
+    foreach ($f in $failures) {
+        Log-Action "  ↳ group: $($f.Name)" "FAILED" $f.Error
+    }
 } catch { Log-Action "Remove group memberships" "FAILED" $_ }
 
 # 5. Remove admin roles
+# -------------------------------------------------------------------------
+# Same iterate-and-collect pattern as step 4. Admin role failures are
+# arguably more important to surface than group failures — a left-over
+# admin role on a departed user is a real security exposure.
 try {
     $roles = Get-MgUserMemberOf -UserId $user.Id | Where-Object { $_.OdataType -eq "#microsoft.graph.directoryRole" }
-    $removed = 0
+    $succeeded = 0
+    $failures  = [System.Collections.Generic.List[PSCustomObject]]::new()
     foreach ($role in $roles) {
+        $roleName = try { $role.AdditionalProperties.displayName } catch { $role.Id }
+        if (-not $roleName) { $roleName = $role.Id }
         try {
-            Remove-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -DirectoryObjectId $user.Id
-            $removed++
-        } catch { }
+            Remove-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -DirectoryObjectId $user.Id -ErrorAction Stop
+            $succeeded++
+        } catch {
+            $failures.Add([PSCustomObject]@{ Name = $roleName; Error = $_.Exception.Message })
+        }
     }
-    Log-Action "Remove admin roles" "OK" "Removed $removed role(s)"
+    $summary = if ($failures.Count -eq 0) {
+        "OK", "Removed $succeeded role(s)"
+    } elseif ($succeeded -gt 0) {
+        "OK", "Removed $succeeded role(s); $($failures.Count) failed (see rows below)"
+    } else {
+        "FAILED", "$($failures.Count) failure(s) (see rows below); 0 succeeded"
+    }
+    Log-Action "Remove admin roles" $summary[0] $summary[1]
+    foreach ($f in $failures) {
+        Log-Action "  ↳ role: $($f.Name)" "FAILED" $f.Error
+    }
 } catch { Log-Action "Remove admin roles" "FAILED" $_ }
 
 # 6. Remove MFA methods
+# -------------------------------------------------------------------------
+# Two enumerations (phone methods, TAPs) that previously had no per-item
+# error handling at all — a single failure aborted the whole step. Same
+# iterate-and-collect treatment applied; phone methods and TAPs are
+# tracked together since they're both "credentials to revoke" from the
+# operator's perspective. The per-failure rows distinguish them via the
+# Step prefix ("phone" vs "tap").
 try {
-    # Remove phone methods
-    Get-MgUserAuthenticationPhoneMethod -UserId $user.Id | ForEach-Object {
-        Remove-MgUserAuthenticationPhoneMethod -UserId $user.Id -PhoneAuthenticationMethodId $_.Id
+    $succeeded = 0
+    $failures  = [System.Collections.Generic.List[PSCustomObject]]::new()
+
+    foreach ($pm in (Get-MgUserAuthenticationPhoneMethod -UserId $user.Id -ErrorAction SilentlyContinue)) {
+        # Identifier for the failure row: phone type + first 8 chars of the
+        # method ID is enough to distinguish multiple methods of the same
+        # type without dumping the full GUID into the CSV.
+        $label = "$($pm.PhoneType) [$($pm.Id.Substring(0,[Math]::Min(8,$pm.Id.Length)))]"
+        try {
+            Remove-MgUserAuthenticationPhoneMethod -UserId $user.Id -PhoneAuthenticationMethodId $pm.Id -ErrorAction Stop
+            $succeeded++
+        } catch {
+            $failures.Add([PSCustomObject]@{ Kind = "phone"; Name = $label; Error = $_.Exception.Message })
+        }
     }
-    # Remove TAPs
-    Get-MgUserAuthenticationTemporaryAccessPassMethod -UserId $user.Id | ForEach-Object {
-        Remove-MgUserAuthenticationTemporaryAccessPassMethod -UserId $user.Id -TemporaryAccessPassAuthenticationMethodId $_.Id
+
+    foreach ($tap in (Get-MgUserAuthenticationTemporaryAccessPassMethod -UserId $user.Id -ErrorAction SilentlyContinue)) {
+        $label = "tap [$($tap.Id.Substring(0,[Math]::Min(8,$tap.Id.Length)))]"
+        try {
+            Remove-MgUserAuthenticationTemporaryAccessPassMethod -UserId $user.Id -TemporaryAccessPassAuthenticationMethodId $tap.Id -ErrorAction Stop
+            $succeeded++
+        } catch {
+            $failures.Add([PSCustomObject]@{ Kind = "tap"; Name = $label; Error = $_.Exception.Message })
+        }
     }
-    Log-Action "Remove MFA methods" "OK"
+
+    $summary = if ($failures.Count -eq 0) {
+        "OK", "Removed $succeeded method(s)"
+    } elseif ($succeeded -gt 0) {
+        "OK", "Removed $succeeded method(s); $($failures.Count) failed (see rows below)"
+    } else {
+        "FAILED", "$($failures.Count) failure(s) (see rows below); 0 succeeded"
+    }
+    Log-Action "Remove MFA methods" $summary[0] $summary[1]
+    foreach ($f in $failures) {
+        Log-Action "  ↳ $($f.Kind): $($f.Name)" "FAILED" $f.Error
+    }
 } catch { Log-Action "Remove MFA methods" "FAILED" $_ }
 
 # 7. Cancel future calendar events

@@ -1,3 +1,22 @@
+# .github/workflows/verify.yml
+# -----------------------------------------------------------------------------
+# Static-only verification for StevesScriptorium. Runs Pester smoke tests and
+# PSScriptAnalyzer on every push to main and every PR (see ADR-0014 for why
+# we deliberately don't exercise live Graph/Exchange in CI).
+#
+# V1 → V2 evolution
+# -----------------
+# V1 of this workflow only installed ExchangeOnlineManagement explicitly and
+# relied on the GitHub-hosted windows-latest runner image happening to ship
+# with the Microsoft.Graph.* submodules pre-installed. That worked, but it
+# was fragile: when the runner image changed (Microsoft refreshes them
+# periodically), the build would silently break, and Test-ModuleManifest
+# (called inside the Pester suite) would fail to import the manifest's
+# RequiredModules list. V2 (this version) installs every module declared in
+# StevesScriptorium.psd1's RequiredModules explicitly, so the CI behaviour
+# is reproducible regardless of runner image. See also ADR-0008
+# (RequiredModules pinning) and ADR-0022 (explicit Graph submodule pinning).
+
 name: Verify
 
 on:
@@ -17,14 +36,41 @@ jobs:
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           Install-Module -Name Pester -MinimumVersion 5.0 -Force -Scope CurrentUser -SkipPublisherCheck
 
-      - name: Install dependencies
+      # Install every module listed in the manifest's RequiredModules so that
+      # Test-ModuleManifest (invoked by tests/Module.Tests.ps1) can import
+      # them. The list MUST stay in sync with StevesScriptorium.psd1's
+      # RequiredModules. Each entry is needed because:
+      #   - ExchangeOnlineManagement                 — Get-Mailbox, Get-MessageTraceV2, etc.
+      #   - Microsoft.Graph.Authentication           — Connect-MgGraph / Get-MgContext / Disconnect-MgGraph
+      #   - Microsoft.Graph.Users                    — Get/New/Update-MgUser, Get-MgUserMemberOf
+      #   - Microsoft.Graph.Users.Actions            — Set-MgUserLicense, Revoke-MgUserSignInSession
+      #   - Microsoft.Graph.Groups                   — Get-MgGroup / Get-MgGroupMember / Remove-MgGroupMemberByRef
+      #   - Microsoft.Graph.Identity.SignIns         — phone-method / TAP / auth-method cmdlets
+      #   - Microsoft.Graph.Identity.DirectoryManagement — Get-MgOrganization, Get-MgSubscribedSku, role cmdlets
+      #   - Microsoft.Graph.Reports                  — Get-MgAuditLogSignIn, Get-MgServiceAnnouncementIssue
+      #
+      # Centralising the names in a single $modules array (rather than 8
+      # separate Install-Module lines) keeps the YAML readable and makes
+      # adding/removing a dependency a single-line change.
+      - name: Install module dependencies
         shell: pwsh
         run: |
-          Install-Module ExchangeOnlineManagement `
-          -Scope CurrentUser `
-          -Force `
-          -SkipPublisherCheck
-          
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          $modules = @(
+            'ExchangeOnlineManagement',
+            'Microsoft.Graph.Authentication',
+            'Microsoft.Graph.Users',
+            'Microsoft.Graph.Users.Actions',
+            'Microsoft.Graph.Groups',
+            'Microsoft.Graph.Identity.SignIns',
+            'Microsoft.Graph.Identity.DirectoryManagement',
+            'Microsoft.Graph.Reports'
+          )
+          foreach ($m in $modules) {
+            Write-Host "Installing $m..."
+            Install-Module -Name $m -Scope CurrentUser -Force -SkipPublisherCheck
+          }
+
       - name: Run Pester tests
         shell: pwsh
         run: |
@@ -47,7 +93,8 @@ jobs:
 
       # Errors fail the build. Warnings are reported but don't fail —
       # the existing scripts have stylistic things (Write-Host etc.) that
-      # are intentional for this project's CLI nature.
+      # are intentional for this project's CLI nature. See ADR-0015 for
+      # the reasoning behind the errors-block / warnings-advisory split.
       - name: Lint (errors only)
         shell: pwsh
         run: |
