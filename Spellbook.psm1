@@ -98,6 +98,11 @@ function global:invoke {
         Write-Host "  Spellbook" -ForegroundColor Cyan
         Write-Host "  invoke <command>  |  invoke <number>" -ForegroundColor DarkGray
         Write-Host ""
+        Write-Host "  . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . *" -ForegroundColor DarkGray
+        Write-Host '    "Any sufficiently advanced technology is indistinguishable from magic."' -ForegroundColor White
+        Write-Host "                                                       -- Arthur C. Clarke" -ForegroundColor DarkGray
+        Write-Host "  * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * ." -ForegroundColor DarkGray
+        Write-Host ""
         $i = 1
         foreach ($key in $commands.Keys) {
             if ($sectionHeaders.ContainsKey($key)) {
