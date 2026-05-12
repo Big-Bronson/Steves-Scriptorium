@@ -7,11 +7,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
-### Added
+---
+
+## [1.2.0] — 2026-05-13
 
 ### Changed
+- Project renamed from `StevesScriptorium` to `Spellbook`. PSGallery listing is a new entry (`Spellbook`); the old `StevesScriptorium` listing is retired.
+- CLI dispatcher renamed from `toolkit` to `invoke`. Usage: `invoke <command>` or `invoke <number>`.
+- `invoke` menu now displays the Arthur C. Clarke quote beneath the header.
+- `Publish.ps1` staging fix: module is now copied to a correctly-named temp directory before `Publish-Module` is called, so publishing works regardless of what the repo's working directory is named on disk.
 
-### Fixed
+### Added
+- `.codex/` — plain-language explanations for all 26 `Public/` scripts and session summaries for each development day, generated from git history via Codex.
 
 ---
 

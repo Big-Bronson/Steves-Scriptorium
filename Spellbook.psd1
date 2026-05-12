@@ -7,7 +7,7 @@
 @{
     # Module identity
     RootModule        = 'Spellbook.psm1'
-    ModuleVersion     = '1.1.0'
+    ModuleVersion     = '1.2.0'
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
@@ -115,7 +115,7 @@
             Tags         = @('M365', 'Microsoft365', 'Exchange', 'Helpdesk', 'MSP', 'Entra', 'PowerShell', 'Toolkit', 'MFA', 'Offboarding', 'Onboarding')
             LicenseUri   = 'https://github.com/Big-Bronson/Spellbook/blob/main/LICENSE'
             ProjectUri   = 'https://github.com/Big-Bronson/Spellbook'
-            ReleaseNotes = '1.1.0 — Added: kill-graph, set/remove-forwarding, get/add-mailboxperms, get-userperms, get/set/add-smsmfa, add-tap, remove-taps, disable-autocalevents, inherit-permissions, Pester smoke tests + GitHub Actions verify workflow. Changed: check-mailflow migrated to Get-MessageTraceV2/Get-MessageTraceDetailV2 (V1 cmdlets are deprecated by Microsoft); RequiredModules expanded to declare every Graph submodule actually used (.Authentication, .Users.Actions, .Groups, .Identity.DirectoryManagement, .Reports). Fixed: offboard-user no longer silently swallows per-item failures during group/role/MFA cleanup; kill-graph no longer throws when no Graph context exists; get-allusers no longer aborts on accounts with null UPN.'
+            ReleaseNotes = '1.2.0 — Changed: project renamed to Spellbook (new PSGallery listing; StevesScriptorium retired); CLI dispatcher renamed from toolkit to invoke; Publish.ps1 staging fix so publishing works regardless of repo folder name; invoke menu shows Arthur C. Clarke quote. Added: .codex/ documentation layer with plain-language explanations for all Public/ scripts.'
         }
     }
 }
