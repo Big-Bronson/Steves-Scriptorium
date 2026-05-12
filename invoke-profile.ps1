@@ -86,10 +86,8 @@ function invoke {
         Write-Host ""
         Write-Host "  invoke <command>" -ForegroundColor Cyan
         Write-Host ""
-        Write-Host "  . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . *" -ForegroundColor DarkGray
-        Write-Host '    "Any sufficiently advanced technology is indistinguishable from magic."' -ForegroundColor White
-        Write-Host "                                                       -- Arthur C. Clarke" -ForegroundColor DarkGray
-        Write-Host "  * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * ." -ForegroundColor DarkGray
+        Write-Host '  "Any sufficiently advanced technology is indistinguishable from magic."' -ForegroundColor DarkGray
+        Write-Host "                                                     -- Arthur C. Clarke" -ForegroundColor DarkGray
         Write-Host ""
 
         # $sectionMap drives the Yellow header rendering during enumeration:
