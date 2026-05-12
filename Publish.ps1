@@ -151,10 +151,31 @@ if (-not $apiKey) {
 Write-Ok 'API key retrieved'
 
 # --- 7. Publish ------------------------------------------------------------
+# Publish-Module -Path requires the folder name to match the module name.
+# Stage to a temp directory named after the module so this works regardless
+# of what the repo working directory is called.
 Write-Step "Publishing $ModuleName v$($manifest.Version)"
 if ($PSCmdlet.ShouldProcess($ModuleName, "Publish v$($manifest.Version) to PSGallery")) {
-    Publish-Module -Path . -NuGetApiKey $apiKey -Verbose
-    Write-Ok 'Published. Allow 15-30 minutes for PS Gallery to index.'
+    $stagingRoot = Join-Path ([System.IO.Path]::GetTempPath()) "PSPublish"
+    $stagingPath = Join-Path $stagingRoot $ModuleName
+    if (Test-Path $stagingPath) { Remove-Item $stagingPath -Recurse -Force }
+    New-Item -ItemType Directory -Path $stagingPath -Force | Out-Null
+
+    # Copy only the module artefacts — not dev/repo files
+    $include = @("$ModuleName.psd1", "$ModuleName.psm1", "Public", "Private", "LICENSE")
+    foreach ($item in $include) {
+        $src = Join-Path $PSScriptRoot $item
+        if (Test-Path $src) {
+            Copy-Item $src (Join-Path $stagingPath $item) -Recurse
+        }
+    }
+
+    try {
+        Publish-Module -Path $stagingPath -NuGetApiKey $apiKey -Verbose
+        Write-Ok 'Published. Allow 15-30 minutes for PS Gallery to index.'
+    } finally {
+        Remove-Item $stagingRoot -Recurse -Force
+    }
 } else {
     Write-Host '    (WhatIf: skipped Publish-Module)' -ForegroundColor DarkGray
 }
