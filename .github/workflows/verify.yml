@@ -28,7 +28,7 @@ jobs:
   test:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: Install Pester
         shell: pwsh
@@ -48,8 +48,9 @@ jobs:
       #   - Microsoft.Graph.Identity.SignIns         — phone-method / TAP / auth-method cmdlets
       #   - Microsoft.Graph.Identity.DirectoryManagement — Get-MgOrganization, Get-MgSubscribedSku, role cmdlets
       #   - Microsoft.Graph.Reports                  — Get-MgAuditLogSignIn, Get-MgServiceAnnouncementIssue
+      #   - Microsoft.Graph.DeviceManagement         — Get-MgDeviceManagementManagedDevice
       #
-      # Centralising the names in a single $modules array (rather than 8
+      # Centralising the names in a single $modules array (rather than 9
       # separate Install-Module lines) keeps the YAML readable and makes
       # adding/removing a dependency a single-line change.
       - name: Install module dependencies
@@ -64,7 +65,8 @@ jobs:
             'Microsoft.Graph.Groups',
             'Microsoft.Graph.Identity.SignIns',
             'Microsoft.Graph.Identity.DirectoryManagement',
-            'Microsoft.Graph.Reports'
+            'Microsoft.Graph.Reports',
+            'Microsoft.Graph.DeviceManagement'
           )
           foreach ($m in $modules) {
             Write-Host "Installing $m..."
@@ -83,7 +85,7 @@ jobs:
   lint:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: Install PSScriptAnalyzer
         shell: pwsh
