@@ -170,8 +170,13 @@ if ($PSCmdlet.ShouldProcess($ModuleName, "Publish v$($manifest.Version) to PSGal
         }
     }
 
+    # Publish-Module (PowerShellGet v2) refuses to run on PS Core — use
+    # Publish-PSResource (Microsoft.PowerShell.PSResourceGet) instead.
+    if (-not (Get-Module -ListAvailable -Name Microsoft.PowerShell.PSResourceGet)) {
+        Install-Module Microsoft.PowerShell.PSResourceGet -Scope CurrentUser -Force -SkipPublisherCheck
+    }
     try {
-        Publish-Module -Path $stagingPath -NuGetApiKey $apiKey -Verbose
+        Publish-PSResource -Path $stagingPath -ApiKey $apiKey -Repository PSGallery -Verbose
         Write-Ok 'Published. Allow 15-30 minutes for PS Gallery to index.'
     } finally {
         Remove-Item $stagingRoot -Recurse -Force
