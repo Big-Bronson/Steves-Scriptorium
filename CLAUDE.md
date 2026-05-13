@@ -66,6 +66,24 @@ Scripts call `Connect-MgGraph` and/or `Connect-ExchangeOnline` at the top if not
 
 `offboard-user.ps1` writes a timestamped CSV to `$env:USERPROFILE\Desktop`. That's intentional — engineers need it immediately accessible.
 
+### PSGallery install — use Install-PSResource, not Install-Module
+
+`Install-Module` hits PackageManagement/PowerShellGet locking issues on Windows even after a session restart. Use the newer command instead:
+
+```powershell
+# First-time install or reinstall
+Install-PSResource -Name Spellbook -Reinstall
+
+# Trust PSGallery to avoid per-module confirmation prompts
+Set-PSResourceRepository -Name PSGallery -Trusted
+```
+
+`Update-Module` also fails if the module was not originally installed via `Install-Module`. `Install-PSResource -Reinstall` handles both cases.
+
+### Import is slow — this is expected
+
+`Import-Module Spellbook` loads all eight Graph submodules plus ExchangeOnlineManagement at startup due to `RequiredModules` in the manifest. This is by design (ADR-0008) — dependencies surface at import time rather than as runtime errors. Nothing to fix.
+
 ---
 
 ## Coding conventions
