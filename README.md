@@ -14,21 +14,23 @@
 **First-time install:**
 
 ```powershell
-Install-PSResource -Name Spellbook
+Install-PSResource -Name Spellbook -Scope CurrentUser
 ```
 
 **Updating to a newer version:**
 
 ```powershell
-Install-PSResource -Name Spellbook -Reinstall -SkipDependencyCheck
+Install-PSResource -Name Spellbook -Reinstall -SkipDependencyCheck -Scope CurrentUser
 ```
+
+`-Scope CurrentUser` installs to your personal Modules folder (`$HOME\Documents\PowerShell\Modules`), which is always writable. Omitting it lets `Install-PSResource` default to `AllUsers`, which on the Microsoft Store build of PS 7 targets a locked WindowsApps directory and throws an access denied error on `Import-Module`.
 
 `-SkipDependencyCheck` is required when updating. Without it, `Install-PSResource` tries to reinstall the dependencies (ExchangeOnlineManagement, Microsoft.Graph.*) alongside the module. If any of those are already loaded in your session — which they will be if you've run any Spellbook commands — PowerShell can't overwrite them and the install fails. The dependencies don't change between Spellbook releases, so skipping them is safe.
 
 **Uninstall:**
 
 ```powershell
-Uninstall-PSResource -Name Spellbook
+Uninstall-PSResource -Name Spellbook -Scope CurrentUser
 ```
 
 Import it in your session (or add to your `$PROFILE` to auto-load):
