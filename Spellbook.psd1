@@ -7,7 +7,7 @@
 @{
     # Module identity
     RootModule        = 'Spellbook.psm1'
-    ModuleVersion     = '1.3.0'
+    ModuleVersion     = '1.5.0'
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
@@ -30,6 +30,8 @@
         'get-signinlogs'
         'get-tenantreport'
         'check-mailflow'
+        'get-archive'
+        'get-forwarding'
         'get-sharedmailboxaudit'
         'set-forwarding'
         'remove-forwarding'
@@ -39,6 +41,8 @@
         'disable-autocalevents'
         'get-groupmembers'
         'kill-graph'
+        'kill-exchange'
+        'get-connections'
         'get-smsmfa'
         'set-smsmfa'
         'add-smsmfa'

@@ -96,8 +96,10 @@ invoke 3                 # run a command by number
 | Command | Description |
 |---|---|
 | `invoke new-sharedmailbox` | Create a shared mailbox and optionally assign Full Access and Send As delegates |
+| `invoke get-archive` | In-place archive size, item count, and quota for a mailbox |
 | `invoke check-mailflow` | Trace message delivery for a sender/recipient pair |
 | `invoke get-sharedmailboxaudit` | Shared mailboxes with delegates, size, licence status |
+| `invoke get-forwarding` | Show forwarding configuration on a mailbox |
 | `invoke set-forwarding` | Enable SMTP forwarding on a mailbox |
 | `invoke remove-forwarding` | Remove SMTP forwarding from a mailbox |
 | `invoke get-mailboxperms` | Who has delegated access (Full Access, Send As) to a mailbox |
@@ -127,6 +129,8 @@ invoke 3                 # run a command by number
 | Command | Description |
 |---|---|
 | `invoke kill-graph` | Disconnect the current Microsoft Graph session |
+| `invoke kill-exchange` | Disconnect the current Exchange Online session |
+| `invoke get-connections` | Show active Exchange Online and Graph connection status |
 | `invoke inherit-permissions` | Reset NTFS folder permissions to inherited; optionally strip explicit ACEs |
 
 
@@ -135,7 +139,7 @@ invoke 3                 # run a command by number
 Tracked in the issue tracker; not yet shipped:
 
 - User Lifecycle: `reset-password`
-- Mailbox & Exchange: `get-archive`, `enable-autoexpand`
+- Mailbox & Exchange: `enable-autoexpand`
 
 
 ---
