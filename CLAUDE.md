@@ -80,6 +80,10 @@ Set-PSResourceRepository -Name PSGallery -Trusted
 
 `Update-Module` also fails if the module was not originally installed via `Install-Module`. `Install-PSResource -Reinstall` handles both cases.
 
+### Version numbers may not be sequential
+
+When multiple commands are developed on separate branches and then merged together, the `ModuleVersion` in `Spellbook.psd1` can jump (e.g. `1.3.0` → `1.5.0`, skipping `1.4.0`). This is expected — don't assume a gap means something was lost. Always add a CHANGELOG entry matching the exact version in the manifest or CI will fail.
+
 ### Import is slow — this is expected
 
 `Import-Module Spellbook` loads all eight Graph submodules plus ExchangeOnlineManagement at startup due to `RequiredModules` in the manifest. This is by design (ADR-0008) — dependencies surface at import time rather than as runtime errors. Nothing to fix.

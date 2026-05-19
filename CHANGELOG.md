@@ -9,6 +9,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [1.5.0] — 2026-05-19
+
+### Added
+- `get-archive` — shows in-place archive status, size, item count, and quota for a mailbox. No-ops cleanly when archive is not enabled.
+- `get-forwarding` — shows SMTP and internal forwarding configuration for a mailbox, including whether a local copy is kept.
+- `kill-exchange` — disconnects the current Exchange Online session. No-ops cleanly when no session is active (mirrors `kill-graph` pattern).
+- `get-connections` — shows current Exchange Online and Microsoft Graph session state (user, tenant, token expiry / scopes) in a single view.
+
+### Changed
+- `Spellbook.psd1` — `ModuleVersion` bumped to `1.5.0`.
+
+---
+
 ## [1.3.0] — 2026-05-13
 
 ### Added

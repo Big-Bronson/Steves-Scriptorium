@@ -61,7 +61,9 @@ function global:invoke {
 
         # Mailbox & Exchange
         "check-mailflow"         = "Trace message delivery for a sender/recipient"
+        "get-archive"            = "In-place archive size, item count, and quota for a mailbox"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
+        "get-forwarding"         = "Show forwarding configuration on a mailbox"
         "set-forwarding"         = "Enable SMTP forwarding on a mailbox"
         "remove-forwarding"      = "Remove SMTP forwarding from a mailbox"
         "get-mailboxperms"       = "Who has delegated access to a mailbox"
@@ -75,6 +77,8 @@ function global:invoke {
 
         # System
         "kill-graph"             = "Disconnect the current Microsoft Graph session"
+        "kill-exchange"          = "Disconnect the current Exchange Online session"
+        "get-connections"        = "Show active Exchange Online and Graph connection status"
         # MFA & Auth
         "get-smsmfa"             = "Show SMS/phone MFA methods for a user"
         "set-smsmfa"             = "Update the phone number on an existing SMS MFA method"
