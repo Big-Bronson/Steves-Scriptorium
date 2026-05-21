@@ -56,7 +56,7 @@
     )
 
     CmdletsToExport   = @()
-    AliasesToExport   = @()
+    AliasesToExport   = @('inv')
     VariablesToExport = @()
 
     # External module dependencies.

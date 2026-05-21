@@ -155,3 +155,5 @@ function global:invoke {
         Write-Host "  Run 'invoke' to see available commands." -ForegroundColor DarkGray
     }
 }
+
+Set-Alias -Name inv -Value invoke -Scope Global

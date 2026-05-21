@@ -8,6 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 
 ### Added
+- `inv` — short alias for `invoke` (e.g. `inv add-tap`, `inv 3`)
 - `invoke` dispatcher now accepts no-hyphen aliases for all commands — e.g. `invoke addtap`, `invoke newuser`, `invoke offboarduser`. Aliases are generated automatically at runtime by stripping hyphens, so new commands get aliases for free. Menu display and numeric shortcuts are unaffected.
 
 ### Fixed
