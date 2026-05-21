@@ -60,7 +60,7 @@ function global:invoke {
         "get-devicereport"       = "Intune managed devices — compliance, sync status, flagged issues"
 
         # Mailbox & Exchange
-        "check-mailflow"         = "Trace message delivery for a sender/recipient"
+        "get-mailflow"           = "Trace message delivery for a sender/recipient"
         "get-archive"            = "In-place archive size, item count, and quota for a mailbox"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
         "get-forwarding"         = "Show forwarding configuration on a mailbox"
@@ -68,7 +68,7 @@ function global:invoke {
         "remove-forwarding"      = "Remove SMTP forwarding from a mailbox"
         "get-mailboxperms"       = "Who has delegated access to a mailbox"
         "get-userperms"          = "Which mailboxes a user has delegated access to"
-        "add-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
+        "set-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
         "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
         "new-sharedmailbox"      = "Create a shared mailbox and assign delegates"
 
@@ -81,6 +81,7 @@ function global:invoke {
         "get-connections"        = "Show active Exchange Online and Graph connection status"
         # MFA & Auth
         "get-smsmfa"             = "Show SMS/phone MFA methods for a user"
+        "get-listsmsmfa"         = "All users with SMS/phone MFA registered — bulk export"
         "set-smsmfa"             = "Update the phone number on an existing SMS MFA method"
         "add-smsmfa"             = "Register a new SMS/phone MFA method for a user"
         "add-tap"                = "Create a Temporary Access Pass for a user"
@@ -93,12 +94,18 @@ function global:invoke {
         "new-user"               = "User Lifecycle"
         "get-userreport"         = "User Reports & Auditing"
         "get-tenantreport"       = "Tenant Health"
-        "check-mailflow"         = "Mailbox & Exchange"
+        "get-mailflow"           = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
         "kill-graph"             = "System"
         "get-smsmfa"             = "MFA & Auth"
         "inherit-permissions"    = "System"
 
+    }
+
+    $aliases = @{}
+    foreach ($key in $commands.Keys) {
+        $stripped = $key -replace '-', ''
+        if ($stripped -ne $key) { $aliases[$stripped] = $key }
     }
 
     if (-not $Command) {
@@ -134,6 +141,8 @@ function global:invoke {
         Write-Host "  Running: $Command" -ForegroundColor DarkGray
     }
 
+    if ($aliases.ContainsKey($Command)) { $Command = $aliases[$Command] }
+
     if ($commands.Contains($Command)) {
         $scriptFile = Join-Path (Join-Path $PSScriptRoot "Public") "$Command.ps1"
         if (Test-Path $scriptFile) {
@@ -147,3 +156,5 @@ function global:invoke {
         Write-Host "  Run 'invoke' to see available commands." -ForegroundColor DarkGray
     }
 }
+
+Set-Alias -Name inv -Value invoke -Scope Global

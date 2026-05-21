@@ -62,13 +62,13 @@ function invoke {
         # --- Mailbox & Exchange ---
         "get-userperms"         = "List all mailboxes a user has access to"
         "get-mailboxperms"      = "List who has access to a specific mailbox"
-        "add-mailboxperms"      = "Grant Full Access and Send As on a mailbox"
+        "set-mailboxperms"      = "Grant Full Access and Send As on a mailbox"
         "get-forwarding"        = "Show forwarding configuration on a mailbox"
         "set-forwarding"        = "Enable email forwarding from a mailbox"
         "remove-forwarding"     = "Remove email forwarding from a mailbox"
         "disable-autocalevents" = "Disable automatic calendar events tenant-wide"
         "new-sharedmailbox"     = "Create a shared mailbox and assign delegates"
-        "check-mailflow"        = "Trace message delivery for a sender/recipient pair"
+        "get-mailflow"          = "Trace message delivery for a sender/recipient pair"
         "get-archive"           = "In-place archive size, item count, and quota for a mailbox"
         "get-sharedmailboxaudit"= "All shared mailboxes with delegates, size, and licence status"
 
@@ -77,6 +77,7 @@ function invoke {
 
         # --- MFA & Auth ---
         "get-smsmfa"            = "Check SMS MFA number on an account"
+        "get-listsmsmfa"        = "All users with SMS/phone MFA registered — bulk export"
         "set-smsmfa"            = "Update existing SMS MFA number"
         "add-smsmfa"            = "Add SMS MFA number to an account"
         "add-tap"               = "Create a Temporary Access Pass"
@@ -87,6 +88,12 @@ function invoke {
         "kill-graph"            = "Disconnect from Microsoft Graph"
         "kill-exchange"         = "Disconnect the current Exchange Online session"
         "get-connections"       = "Show active Exchange Online and Graph connection status"
+    }
+
+    $aliases = @{}
+    foreach ($key in $commands.Keys) {
+        $stripped = $key -replace '-', ''
+        if ($stripped -ne $key) { $aliases[$stripped] = $key }
     }
 
     # No argument — print the full list
@@ -144,6 +151,8 @@ function invoke {
         Write-Host "  Running: $Command" -ForegroundColor DarkGray
     }
 
+    if ($aliases.ContainsKey($Command)) { $Command = $aliases[$Command] }
+
     # Match and run. .Contains() not .ContainsKey() — see ADR-0010.
     $scriptFile = Join-Path $scriptsPath "$Command.ps1"
 
@@ -159,3 +168,5 @@ function invoke {
         Write-Host "  Run 'invoke' to see available commands." -ForegroundColor DarkGray
     }
 }
+
+Set-Alias -Name inv -Value invoke

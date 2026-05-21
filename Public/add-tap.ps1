@@ -3,7 +3,7 @@
 # Requires: Graph (UserAuthenticationMethod.ReadWrite.All)
 
 if (-not (Get-MgContext)) {
-    Connect-MgGraph -Scopes "UserAuthenticationMethod.ReadWrite.All" -ContextScope Process
+    Connect-MgGraph -Scopes "UserAuthenticationMethod.ReadWrite.All","User.Read.All" -ContextScope Process
 }
 
 $upn = Read-Host "Enter UPN"

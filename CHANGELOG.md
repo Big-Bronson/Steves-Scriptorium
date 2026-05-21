@@ -9,6 +9,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [1.6.0] — 2026-05-21
+
+### Added
+- `get-listsmsmfa` — bulk list of all users with SMS/phone MFA registered; optional CSV export to `C:\`
+- `inv` — short alias for `invoke` (e.g. `inv add-tap`, `inv 3`)
+- `invoke` dispatcher now accepts no-hyphen aliases for all commands — e.g. `invoke addtap`, `invoke newuser`, `invoke offboarduser`. Aliases are generated automatically at runtime by stripping hyphens, so new commands get aliases for free. Menu display and numeric shortcuts are unaffected.
+
+### Changed
+- `check-mailflow` renamed to `get-mailflow` — consistent `get-` verb prefix with the rest of the module
+- `add-mailboxperms` renamed to `set-mailboxperms` — `set-` better reflects granting/updating delegate permissions
+
+### Fixed
+- `add-tap` — added missing `User.Read.All` scope to `Connect-MgGraph` call. The script calls `Get-MgUser` to resolve the UPN, which requires this scope; without it the lookup silently returned nothing and the TAP creation failed.
+
+---
+
 ## [1.5.0] — 2026-05-19
 
 ### Added
