@@ -44,6 +44,7 @@
         'kill-exchange'
         'get-connections'
         'get-smsmfa'
+        'get-listsmsmfa'
         'set-smsmfa'
         'add-smsmfa'
         'add-tap'

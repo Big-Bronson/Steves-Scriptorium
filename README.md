@@ -121,6 +121,7 @@ invoke 3                 # run a command by number
 | `invoke get-smsmfa` | Show SMS/phone MFA methods registered for a user |
 | `invoke set-smsmfa` | Update the phone number on an existing SMS MFA method |
 | `invoke add-smsmfa` | Register a new SMS/phone MFA method for a user |
+| `invoke get-listsmsmfa` | All users with SMS/phone MFA registered — optional CSV export |
 | `invoke add-tap` | Create a Temporary Access Pass (one-time, 60 min default) |
 | `invoke remove-taps` | Remove all Temporary Access Passes for a user |
 
@@ -166,13 +167,13 @@ Each script connects itself and prompts for auth. The Graph scopes required vary
 | Scope | Used by |
 |---|---|
 | `User.ReadWrite.All` | new-user, offboard-user, set-userlicence |
-| `User.Read.All` | add-tap, get-allusers, get-guestaudit, get-groupmembers, get-inactiveusers, get-mfaaudit, get-sharedmailboxaudit, get-tenantreport, get-userreport |
+| `User.Read.All` | add-tap, get-allusers, get-guestaudit, get-groupmembers, get-inactiveusers, get-licencegaps, get-listsmsmfa, get-mfaaudit, get-sharedmailboxaudit, get-tenantreport, get-userreport |
 | `Directory.ReadWrite.All` | offboard-user, set-userlicence |
 | `Directory.Read.All` | get-allusers, get-guestaudit, get-inactiveusers, get-signinlogs, get-tenantreport, get-userreport, new-user |
 | `Group.ReadWrite.All` | new-user |
 | `Group.Read.All` | get-groupmembers |
 | `UserAuthenticationMethod.ReadWrite.All` | add-smsmfa, set-smsmfa, add-tap, remove-taps, offboard-user |
-| `UserAuthenticationMethod.Read.All` | get-smsmfa, get-mfaaudit, get-userreport, get-tenantreport |
+| `UserAuthenticationMethod.Read.All` | get-listsmsmfa, get-smsmfa, get-mfaaudit, get-userreport, get-tenantreport |
 | `Organization.Read.All` | disable-autocalevents, get-tenantreport |
 | `RoleManagement.Read.Directory` | get-tenantreport |
 | `RoleManagement.ReadWrite.Directory` | offboard-user |

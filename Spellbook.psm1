@@ -81,6 +81,7 @@ function global:invoke {
         "get-connections"        = "Show active Exchange Online and Graph connection status"
         # MFA & Auth
         "get-smsmfa"             = "Show SMS/phone MFA methods for a user"
+        "get-listsmsmfa"         = "All users with SMS/phone MFA registered — bulk export"
         "set-smsmfa"             = "Update the phone number on an existing SMS MFA method"
         "add-smsmfa"             = "Register a new SMS/phone MFA method for a user"
         "add-tap"                = "Create a Temporary Access Pass for a user"

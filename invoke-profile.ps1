@@ -77,6 +77,7 @@ function invoke {
 
         # --- MFA & Auth ---
         "get-smsmfa"            = "Check SMS MFA number on an account"
+        "get-listsmsmfa"        = "All users with SMS/phone MFA registered — bulk export"
         "set-smsmfa"            = "Update existing SMS MFA number"
         "add-smsmfa"            = "Add SMS MFA number to an account"
         "add-tap"               = "Create a Temporary Access Pass"
