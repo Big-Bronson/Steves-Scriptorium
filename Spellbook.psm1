@@ -60,7 +60,7 @@ function global:invoke {
         "get-devicereport"       = "Intune managed devices — compliance, sync status, flagged issues"
 
         # Mailbox & Exchange
-        "check-mailflow"         = "Trace message delivery for a sender/recipient"
+        "get-mailflow"           = "Trace message delivery for a sender/recipient"
         "get-archive"            = "In-place archive size, item count, and quota for a mailbox"
         "get-sharedmailboxaudit" = "Shared mailboxes with delegates, size, licence status"
         "get-forwarding"         = "Show forwarding configuration on a mailbox"
@@ -68,7 +68,7 @@ function global:invoke {
         "remove-forwarding"      = "Remove SMTP forwarding from a mailbox"
         "get-mailboxperms"       = "Who has delegated access to a mailbox"
         "get-userperms"          = "Which mailboxes a user has delegated access to"
-        "add-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
+        "set-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
         "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
         "new-sharedmailbox"      = "Create a shared mailbox and assign delegates"
 
@@ -93,7 +93,7 @@ function global:invoke {
         "new-user"               = "User Lifecycle"
         "get-userreport"         = "User Reports & Auditing"
         "get-tenantreport"       = "Tenant Health"
-        "check-mailflow"         = "Mailbox & Exchange"
+        "get-mailflow"           = "Mailbox & Exchange"
         "get-groupmembers"       = "Groups"
         "kill-graph"             = "System"
         "get-smsmfa"             = "MFA & Auth"

@@ -62,13 +62,13 @@ function invoke {
         # --- Mailbox & Exchange ---
         "get-userperms"         = "List all mailboxes a user has access to"
         "get-mailboxperms"      = "List who has access to a specific mailbox"
-        "add-mailboxperms"      = "Grant Full Access and Send As on a mailbox"
+        "set-mailboxperms"      = "Grant Full Access and Send As on a mailbox"
         "get-forwarding"        = "Show forwarding configuration on a mailbox"
         "set-forwarding"        = "Enable email forwarding from a mailbox"
         "remove-forwarding"     = "Remove email forwarding from a mailbox"
         "disable-autocalevents" = "Disable automatic calendar events tenant-wide"
         "new-sharedmailbox"     = "Create a shared mailbox and assign delegates"
-        "check-mailflow"        = "Trace message delivery for a sender/recipient pair"
+        "get-mailflow"          = "Trace message delivery for a sender/recipient pair"
         "get-archive"           = "In-place archive size, item count, and quota for a mailbox"
         "get-sharedmailboxaudit"= "All shared mailboxes with delegates, size, and licence status"
 

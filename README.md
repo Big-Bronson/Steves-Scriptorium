@@ -97,14 +97,14 @@ invoke 3                 # run a command by number
 |---|---|
 | `invoke new-sharedmailbox` | Create a shared mailbox and optionally assign Full Access and Send As delegates |
 | `invoke get-archive` | In-place archive size, item count, and quota for a mailbox |
-| `invoke check-mailflow` | Trace message delivery for a sender/recipient pair |
+| `invoke get-mailflow` | Trace message delivery for a sender/recipient pair |
 | `invoke get-sharedmailboxaudit` | Shared mailboxes with delegates, size, licence status |
 | `invoke get-forwarding` | Show forwarding configuration on a mailbox |
 | `invoke set-forwarding` | Enable SMTP forwarding on a mailbox |
 | `invoke remove-forwarding` | Remove SMTP forwarding from a mailbox |
 | `invoke get-mailboxperms` | Who has delegated access (Full Access, Send As) to a mailbox |
 | `invoke get-userperms` | Which mailboxes a user has delegated access to |
-| `invoke add-mailboxperms` | Grant Full Access and/or Send As on a mailbox |
+| `invoke set-mailboxperms` | Grant Full Access and/or Send As on a mailbox |
 | `invoke disable-autocalevents` | Disable "Events from email" tenant-wide (requires typing tenant domain to confirm) |
 
 ### Groups
