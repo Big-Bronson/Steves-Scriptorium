@@ -101,6 +101,12 @@ function global:invoke {
 
     }
 
+    $aliases = @{}
+    foreach ($key in $commands.Keys) {
+        $stripped = $key -replace '-', ''
+        if ($stripped -ne $key) { $aliases[$stripped] = $key }
+    }
+
     if (-not $Command) {
         Write-Host ""
         Write-Host "  Spellbook" -ForegroundColor Cyan
@@ -133,6 +139,8 @@ function global:invoke {
         $Command = $keys[$index - 1]
         Write-Host "  Running: $Command" -ForegroundColor DarkGray
     }
+
+    if ($aliases.ContainsKey($Command)) { $Command = $aliases[$Command] }
 
     if ($commands.Contains($Command)) {
         $scriptFile = Join-Path (Join-Path $PSScriptRoot "Public") "$Command.ps1"

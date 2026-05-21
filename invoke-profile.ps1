@@ -89,6 +89,12 @@ function invoke {
         "get-connections"       = "Show active Exchange Online and Graph connection status"
     }
 
+    $aliases = @{}
+    foreach ($key in $commands.Keys) {
+        $stripped = $key -replace '-', ''
+        if ($stripped -ne $key) { $aliases[$stripped] = $key }
+    }
+
     # No argument — print the full list
     if (-not $Command) {
         Write-Host ""
@@ -143,6 +149,8 @@ function invoke {
         $Command = $keys[$index - 1]
         Write-Host "  Running: $Command" -ForegroundColor DarkGray
     }
+
+    if ($aliases.ContainsKey($Command)) { $Command = $aliases[$Command] }
 
     # Match and run. .Contains() not .ContainsKey() — see ADR-0010.
     $scriptFile = Join-Path $scriptsPath "$Command.ps1"

@@ -7,6 +7,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+### Added
+- `invoke` dispatcher now accepts no-hyphen aliases for all commands — e.g. `invoke addtap`, `invoke newuser`, `invoke offboarduser`. Aliases are generated automatically at runtime by stripping hyphens, so new commands get aliases for free. Menu display and numeric shortcuts are unaffected.
+
 ### Fixed
 - `add-tap` — added missing `User.Read.All` scope to `Connect-MgGraph` call. The script calls `Get-MgUser` to resolve the UPN, which requires this scope; without it the lookup silently returned nothing and the TAP creation failed.
 
