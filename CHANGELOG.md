@@ -7,6 +7,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+---
+
+## [1.6.0] — 2026-05-21
+
 ### Added
 - `get-listsmsmfa` — bulk list of all users with SMS/phone MFA registered; optional CSV export to `C:\`
 - `inv` — short alias for `invoke` (e.g. `inv add-tap`, `inv 3`)

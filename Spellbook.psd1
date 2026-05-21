@@ -7,7 +7,7 @@
 @{
     # Module identity
     RootModule        = 'Spellbook.psm1'
-    ModuleVersion     = '1.5.0'
+    ModuleVersion     = '1.6.0'
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
@@ -129,7 +129,7 @@
             Tags         = @('M365', 'Microsoft365', 'Exchange', 'Helpdesk', 'MSP', 'Entra', 'PowerShell', 'Toolkit', 'MFA', 'Offboarding', 'Onboarding')
             LicenseUri   = 'https://github.com/Big-Bronson/Spellbook/blob/main/LICENSE'
             ProjectUri   = 'https://github.com/Big-Bronson/Spellbook'
-            ReleaseNotes = '1.2.0 — Changed: project renamed to Spellbook (new PSGallery listing; StevesScriptorium retired); CLI dispatcher renamed from toolkit to invoke; Publish.ps1 staging fix so publishing works regardless of repo folder name; invoke menu shows Arthur C. Clarke quote. Added: .codex/ documentation layer with plain-language explanations for all Public/ scripts.'
+            ReleaseNotes = '1.6.0 — Added: get-listsmsmfa (bulk SMS/phone MFA list with optional CSV export), inv short alias for invoke, no-hyphen aliases for all commands (addtap, newuser, etc). Changed: check-mailflow renamed to get-mailflow, add-mailboxperms renamed to set-mailboxperms. Fixed: add-tap missing User.Read.All scope.'
         }
     }
 }
