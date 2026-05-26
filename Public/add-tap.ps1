@@ -1,5 +1,5 @@
 # add-tap.ps1
-# Creates a Temporary Access Pass for a user. Defaults: one-time use, 60 minutes.
+# Creates a Temporary Access Pass for a user. Defaults: multi-use, 60 minutes.
 # Requires: Graph (UserAuthenticationMethod.ReadWrite.All)
 
 if (-not (Get-MgContext)) {
@@ -16,7 +16,7 @@ $lifetimeMins = Read-Host "TAP lifetime in minutes (default 60)"
 if (-not $lifetimeMins -or $lifetimeMins -notmatch '^\d+$') { $lifetimeMins = 60 }
 else { $lifetimeMins = [int]$lifetimeMins }
 
-$isUsableOnce = (Read-Host "One-time use only? (y/n, default y)") -ne "n"
+$isUsableOnce = (Read-Host "One-time use only? (y/n, default n)") -eq "y"
 
 try {
     $params = @{

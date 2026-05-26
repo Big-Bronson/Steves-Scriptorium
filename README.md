@@ -122,7 +122,7 @@ invoke 3                 # run a command by number
 | `invoke set-smsmfa` | Update the phone number on an existing SMS MFA method |
 | `invoke add-smsmfa` | Register a new SMS/phone MFA method for a user |
 | `invoke get-listsmsmfa` | All users with SMS/phone MFA registered — optional CSV export |
-| `invoke add-tap` | Create a Temporary Access Pass (one-time, 60 min default) |
+| `invoke add-tap` | Create a Temporary Access Pass (multi-use, 60 min default) |
 | `invoke remove-taps` | Remove all Temporary Access Passes for a user |
 
 ### System
