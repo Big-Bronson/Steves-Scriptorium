@@ -21,10 +21,11 @@ When users lose or cannot access their MFA devices (phone, authenticator app, ha
 
 ### Key Patterns
 - **Interactive CLI**: Uses `Read-Host` to gather parameters rather than accepting them as function arguments, making this a hands-on operator tool rather than an automation primitive.
-- **Soft defaults with override**: Lifetime defaults to 60 minutes and one-time use defaults to yes, but both are operator-overridable via prompts.
+- **Soft defaults with override**: Lifetime defaults to 60 minutes and one-time use defaults to no (multi-use), but both are operator-overridable via prompts.
 - **UTC timestamp normalization**: Converts system time to ISO 8601 UTC format (`"o"` format specifier) for Graph API consistency.
 - **Graceful missing-user handling**: Uses `-ErrorAction SilentlyContinue` to avoid script termination on lookup failure, then explicitly checks the result and exits cleanly.
 - **Contextual error messaging**: The catch block hints at the one-TAP-per-user constraint as a likely cause of failure, reducing operator confusion.
 
 ### Change Log
 - 2026-05-08: Added TAP creation feature as part of MFA toolkit (get/set/add-smsmfa, add-tap, remove-taps family).
+- 2026-05-26: Default for one-time use flipped to no (multi-use). Prompt updated to reflect new default.

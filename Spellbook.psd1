@@ -7,7 +7,7 @@
 @{
     # Module identity
     RootModule        = 'Spellbook.psm1'
-    ModuleVersion     = '1.6.0'
+    ModuleVersion     = '1.6.1'
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
@@ -129,7 +129,7 @@
             Tags         = @('M365', 'Microsoft365', 'Exchange', 'Helpdesk', 'MSP', 'Entra', 'PowerShell', 'Toolkit', 'MFA', 'Offboarding', 'Onboarding')
             LicenseUri   = 'https://github.com/Big-Bronson/Spellbook/blob/main/LICENSE'
             ProjectUri   = 'https://github.com/Big-Bronson/Spellbook'
-            ReleaseNotes = '1.6.0 — Added: get-listsmsmfa (bulk SMS/phone MFA list with optional CSV export), inv short alias for invoke, no-hyphen aliases for all commands (addtap, newuser, etc). Changed: check-mailflow renamed to get-mailflow, add-mailboxperms renamed to set-mailboxperms. Fixed: add-tap missing User.Read.All scope.'
+            ReleaseNotes = '1.6.1 — Changed: add-tap one-time use now defaults to no (multi-use); press Enter to accept, type y for one-time.'
         }
     }
 }

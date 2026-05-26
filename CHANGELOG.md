@@ -9,6 +9,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [1.6.1] — 2026-05-26
+
+### Changed
+- `add-tap` — default for one-time use flipped to **no** (multi-use). Press Enter to accept; type `y` to make it one-time.
+
+---
+
 ## [1.6.0] — 2026-05-21
 
 ### Added
