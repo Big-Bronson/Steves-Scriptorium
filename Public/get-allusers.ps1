@@ -3,7 +3,7 @@
 # No Entra P1/P2 required. Uses Exchange mailbox stats for last activity.
 # Requires: Graph (User.Read.All, Directory.Read.All) + Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -DisableWAM }
 if (-not (Get-MgContext)) {
     Connect-MgGraph -Scopes "User.Read.All", "Directory.Read.All" -ContextScope Process
 }

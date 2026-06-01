@@ -9,7 +9,7 @@
 # Requires: Exchange Online (Mailbox role) + Graph (Organization.Read.All)
 #           — Graph is used only to fetch the tenant name for confirmation.
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 if (-not (Get-MgContext)) {
     Connect-MgGraph -Scopes "Organization.Read.All" -ContextScope Process
 }

@@ -15,7 +15,7 @@
 # Requires: Graph (User.Read.All, Directory.Read.All, Organization.Read.All,
 #           ServiceHealth.Read.All) + Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -DisableWAM }
 if (-not (Get-MgContext)) {
     Connect-MgGraph -Scopes "User.Read.All","Directory.Read.All","Organization.Read.All","ServiceHealth.Read.All","RoleManagement.Read.Directory","UserAuthenticationMethod.Read.All" -ContextScope Process
 }

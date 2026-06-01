@@ -3,7 +3,7 @@
 # to one or more delegates. Follows the same prompt-then-confirm pattern as new-user.
 # Requires: Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $displayName = Read-Host "Display name (eg. Help Desk)"
 $alias       = Read-Host "Email alias (the part before @, eg. helpdesk)"

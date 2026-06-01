@@ -62,6 +62,22 @@ This has burned us before. Both `Spellbook.psm1` and `invoke-profile.ps1` were p
 
 Scripts call `Connect-MgGraph` and/or `Connect-ExchangeOnline` at the top if not already connected. They request only the scopes they need. Don't add a global connection step — keep it per-script.
 
+### Exchange Online auth — always use `-DisableWAM`
+
+All `Connect-ExchangeOnline` calls must include `-DisableWAM`. Without it, EXO v3.7.0+ defaults to Windows Authentication Manager (WAM), which opens a separate broker window that blocks password manager autocomplete. `-DisableWAM` forces browser-based auth, matching how `Connect-MgGraph` already behaves. Requires ExchangeOnlineManagement ≥ 3.7.2 (the manifest pins this).
+
+### Exchange TimeSpan deserialization — use `.Days` not `.TotalDays`
+
+When reading `TimeSpan`/`EnhancedTimeSpan` properties from Exchange Online cmdlets (e.g. `AgeLimitForRetention` on retention tags), use `.Days` not `.TotalDays`. EXO's REST-based PowerShell module deserializes these as plain objects; `.TotalDays` is a computed property that doesn't survive the remoting boundary and silently returns 0. `.Days` is the raw integer field and is always present.
+
+```powershell
+# WRONG — TotalDays is not preserved after EXO deserialization
+"$([int]$tag.AgeLimitForRetention.TotalDays) days"
+
+# CORRECT
+"$($tag.AgeLimitForRetention.Days) days"
+```
+
 ### Offboard log goes to Desktop
 
 `offboard-user.ps1` writes a timestamped CSV to `$env:USERPROFILE\Desktop`. That's intentional — engineers need it immediately accessible.

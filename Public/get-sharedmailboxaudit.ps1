@@ -4,7 +4,7 @@
 # Useful for: quarterly mailbox reviews, licence cost audits, offboarding follow-ups.
 # Requires: Exchange Online + Graph (User.Read.All)
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -DisableWAM }
 if (-not (Get-MgContext)) {
     Connect-MgGraph -Scopes "User.Read.All" -ContextScope Process
 }

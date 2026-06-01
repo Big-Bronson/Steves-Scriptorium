@@ -1,4 +1,4 @@
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $identity = Read-Host "Mailbox (UPN or primary SMTP)"
 

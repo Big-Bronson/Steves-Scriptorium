@@ -9,6 +9,40 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [1.6.5] — 2026-06-01
+
+### Added
+- `get-inplaceretention` — list all MRM retention policies in the tenant with their linked tags, actions, and age limits.
+- `add-inplaceretention` — create an archive retention policy by cloning Default MRM Policy and swapping the archive tag for a custom-duration one (default 12 months); optionally assign to a single mailbox or all members of a distribution group.
+- `get-userinplace` — show the MRM retention policy currently assigned to a mailbox (shows "Default MRM Policy (tenant default)" when none is explicitly set).
+- `set-userinplace` — assign a retention policy to a mailbox, chosen from a numbered list of all available policies.
+
+---
+
+## [1.6.4] — 2026-06-01
+
+### Added
+- `get-maxmessagesize` — show current `MaxSendSize` and `MaxReceiveSize` for a single mailbox.
+
+---
+
+## [1.6.3] — 2026-06-01
+
+### Added
+- `set-maxmessagesize` — set `MaxSendSize` and `MaxReceiveSize` on all mailboxes or a single mailbox; separate prompts for send and receive limits, defaults to 50 MB each.
+
+---
+
+## [1.6.2] — 2026-06-01
+
+### Changed
+- All Exchange Online commands now use browser-based authentication (`-DisableWAM`). Exchange will open a browser tab instead of the WAM mini-window, allowing password managers (e.g. 1Password) to autocomplete credentials — consistent with how Graph auth already worked.
+
+### Internal
+- Bumped `ExchangeOnlineManagement` minimum version in manifest from `3.7.0` to `3.7.2` (earliest version that supports `-DisableWAM`).
+
+---
+
 ## [1.6.1] — 2026-05-26
 
 ### Changed

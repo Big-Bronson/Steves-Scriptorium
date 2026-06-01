@@ -25,7 +25,7 @@ if ($mode -eq "1") {
 
 } else {
     # Cloud-only M365 path (Exchange mailbox stats)
-    if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline }
+    if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -DisableWAM }
     if (-not (Get-MgContext)) {
         Connect-MgGraph -Scopes "User.Read.All", "Directory.Read.All" -ContextScope Process
     }

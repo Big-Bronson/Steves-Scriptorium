@@ -69,6 +69,12 @@ function global:invoke {
         "get-mailboxperms"       = "Who has delegated access to a mailbox"
         "get-userperms"          = "Which mailboxes a user has delegated access to"
         "set-mailboxperms"       = "Grant Full Access and/or Send As to a mailbox"
+        "get-maxmessagesize"      = "Show MaxSendSize and MaxReceiveSize for a mailbox"
+        "set-maxmessagesize"      = "Set MaxSendSize and MaxReceiveSize on mailboxes"
+        "get-inplaceretention"    = "List all MRM retention policies and their tags"
+        "add-inplaceretention"    = "Create an archive retention policy cloned from Default MRM Policy"
+        "get-userinplace"         = "Show the MRM retention policy assigned to a mailbox"
+        "set-userinplace"         = "Assign an MRM retention policy to a mailbox"
         "disable-autocalevents"  = "Disable automatic calendar events tenant-wide"
         "new-sharedmailbox"      = "Create a shared mailbox and assign delegates"
 

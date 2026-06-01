@@ -3,7 +3,7 @@
 # before applying. Asks whether to keep a local copy.
 # Requires: Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $source = Read-Host "Mailbox to forward FROM (UPN or primary SMTP)"
 $dest   = Read-Host "Forward TO (email address)"

@@ -20,7 +20,7 @@
 #           UserAuthenticationMethod.ReadWrite.All, RoleManagement.ReadWrite.Directory)
 #           Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -DisableWAM }
 if (-not (Get-MgContext)) {
     Connect-MgGraph -Scopes "User.ReadWrite.All","Directory.ReadWrite.All","UserAuthenticationMethod.ReadWrite.All","RoleManagement.ReadWrite.Directory" -ContextScope Process
 }

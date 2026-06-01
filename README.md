@@ -105,6 +105,12 @@ invoke 3                 # run a command by number
 | `invoke get-mailboxperms` | Who has delegated access (Full Access, Send As) to a mailbox |
 | `invoke get-userperms` | Which mailboxes a user has delegated access to |
 | `invoke set-mailboxperms` | Grant Full Access and/or Send As on a mailbox |
+| `invoke get-maxmessagesize` | Show current MaxSendSize and MaxReceiveSize for a mailbox |
+| `invoke set-maxmessagesize` | Set MaxSendSize and MaxReceiveSize on all mailboxes or a single mailbox |
+| `invoke get-inplaceretention` | List all MRM retention policies with their linked tags and actions |
+| `invoke add-inplaceretention` | Create an archive retention policy cloned from Default MRM Policy with a custom duration |
+| `invoke get-userinplace` | Show the MRM retention policy currently assigned to a mailbox |
+| `invoke set-userinplace` | Assign an MRM retention policy to a mailbox, chosen from a numbered list |
 | `invoke disable-autocalevents` | Disable "Events from email" tenant-wide (requires typing tenant domain to confirm) |
 
 ### Groups

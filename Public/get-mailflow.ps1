@@ -31,7 +31,7 @@
 
 # Self-contained connection per ADR-0003 — every Public script ensures its
 # own connection rather than relying on a shared bootstrap step.
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 # --- Operator inputs ------------------------------------------------------
 # Both filters are optional; at least one is recommended in practice but the

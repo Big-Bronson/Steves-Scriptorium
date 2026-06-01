@@ -3,7 +3,7 @@
 # Filters out NT AUTHORITY / S-1-5 system ACEs automatically.
 # Requires: Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $identity = Read-Host "Mailbox to inspect (UPN or primary SMTP)"
 

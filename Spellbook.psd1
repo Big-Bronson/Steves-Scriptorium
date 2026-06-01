@@ -7,7 +7,7 @@
 @{
     # Module identity
     RootModule        = 'Spellbook.psm1'
-    ModuleVersion     = '1.6.1'
+    ModuleVersion     = '1.6.5'
     GUID              = '31541981-5235-4afe-bf0d-19c7b5fb438c'
     Author            = 'Stephen Vella'
     CompanyName       = 'stephenvella.work'
@@ -38,6 +38,12 @@
         'get-mailboxperms'
         'get-userperms'
         'set-mailboxperms'
+        'get-maxmessagesize'
+        'set-maxmessagesize'
+        'get-inplaceretention'
+        'add-inplaceretention'
+        'get-userinplace'
+        'set-userinplace'
         'disable-autocalevents'
         'get-groupmembers'
         'kill-graph'
@@ -76,7 +82,7 @@
         # Get-Mailbox, Set-Mailbox, Get-MessageTraceV2, Get-RecipientPermission,
         # Add-MailboxPermission, Get-MailboxStatistics, Set-MailboxAutoReplyConfiguration,
         # Remove-CalendarEvents, Set-MailboxCalendarConfiguration, etc.
-        @{ ModuleName = 'ExchangeOnlineManagement';                  ModuleVersion = '3.7.0' }
+        @{ ModuleName = 'ExchangeOnlineManagement';                  ModuleVersion = '3.7.2' }
 
         # Connect-MgGraph, Get-MgContext, Disconnect-MgGraph. Implicit dependency
         # of every other Microsoft.Graph.* submodule but listed explicitly so
@@ -129,7 +135,7 @@
             Tags         = @('M365', 'Microsoft365', 'Exchange', 'Helpdesk', 'MSP', 'Entra', 'PowerShell', 'Toolkit', 'MFA', 'Offboarding', 'Onboarding')
             LicenseUri   = 'https://github.com/Big-Bronson/Spellbook/blob/main/LICENSE'
             ProjectUri   = 'https://github.com/Big-Bronson/Spellbook'
-            ReleaseNotes = '1.6.1 — Changed: add-tap one-time use now defaults to no (multi-use); press Enter to accept, type y for one-time.'
+            ReleaseNotes = '1.6.5 — Added: get-inplaceretention, add-inplaceretention, get-userinplace, set-userinplace — MRM retention policy management for in-place archive.'
         }
     }
 }

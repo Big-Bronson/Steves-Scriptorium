@@ -2,7 +2,7 @@
 # Removes SMTP forwarding from a mailbox.
 # Requires: Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $identity = Read-Host "Mailbox to remove forwarding from (UPN or primary SMTP)"
 

@@ -2,7 +2,7 @@
 # Grants delegated mailbox access (Full Access and/or Send As) to a user.
 # Requires: Exchange Online
 
-if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false }
+if (-not (Get-ConnectionInformation)) { Connect-ExchangeOnline -ShowBanner:$false -DisableWAM }
 
 $identity = Read-Host "Mailbox to grant access TO (UPN or primary SMTP)"
 $trustee  = Read-Host "User to grant access (UPN)"
